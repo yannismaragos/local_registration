@@ -1,0 +1,43 @@
+<h2 class="dtitle_usersearch" style="text-align: center;background-color:#f0f8ff;">{{#str}}usersearch,local_registration{{/str}}</h2>
+
+<table id="usersearch" class="display" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th></th>
+            <th>{{#str}}columnfirstname,local_registration{{/str}}</th>
+            <th>{{#str}}columnlastname,local_registration{{/str}}</th>
+            <th>{{#str}}columnemail,local_registration{{/str}}</th>
+            <th>{{#str}}columntenantname,local_registration{{/str}}</th>
+            <th>{{#str}}columncountry,local_registration{{/str}}</th>
+            <th>{{#str}}columngender,local_registration{{/str}}</th>
+            <th>{{#str}}columndomain,local_registration{{/str}}</th>
+            <th>{{#str}}columncomments,local_registration{{/str}}</th>
+            <th>{{#str}}columninterests,local_registration{{/str}}</th>
+            <th>{{#str}}columnconfirmed,local_registration{{/str}}</th>
+            <th>{{#str}}columntimecreated,local_registration{{/str}}</th>
+            <th>{{#str}}actions,local_registration{{/str}}</th>
+        </tr>
+
+        <tr class="filters table-active">
+            <th></th>
+            <th><input type="text" class="form-control" data-index="1" placeholder="{{#str}}columnfirstname,local_registration{{/str}}"></th>
+            <th><input type="text" class="form-control" data-index="2" placeholder="{{#str}}columnlastname,local_registration{{/str}}"></th>
+            <th><input type="text" class="form-control" data-index="3" placeholder="{{#str}}columnemail,local_registration{{/str}}"></th>
+            <th>{{{tenantsfield}}}</th>
+            <th>{{{countriesfield}}}</th>
+            <th>{{{genderfield}}}</th>
+            <th>{{{domainfield}}}</th>
+            <th><input type="text" class="form-control" data-index="8" placeholder="{{#str}}columncomments,local_registration{{/str}}"></th>
+            <th>{{{interestsfield}}}</th>
+            <th>{{{confirmedfield}}}</th>
+            <th>{{{timecreatedfield}}}</th>
+            <th><button class="btn btn-warning reset-filters">{{#str}}reset{{/str}}</button></th>
+        </tr>
+    </thead>
+</table>
+
+{{#js}}
+    require(['local_registration/usersearch'], function(UserSearch) {
+        UserSearch.init();
+    });
+{{/js}}
