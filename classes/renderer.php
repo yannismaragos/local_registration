@@ -31,15 +31,15 @@
  */
 class local_registration_renderer extends plugin_renderer_base {
     /**
-     * Renders the index page.
+     * Renders the users page.
      *
-     * @param \local_registration\output\usersearch $outputpage
+     * @param \local_registration\output\users $outputpage
      * @return string HTML
      * @throws moodle_exception
      */
-    protected function render_usersearch(\local_registration\output\usersearch $outputpage) {
+    protected function render_users(\local_registration\output\users $outputpage) {
         $data = $outputpage->export_for_template($this);
 
-        return $this->render_from_template('local_registration/usersearch', $data);
+        return $this->render_from_template('local_registration/users', $data);
     }
 }

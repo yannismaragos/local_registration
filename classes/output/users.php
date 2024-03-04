@@ -35,7 +35,7 @@ use local_datatables\field\datefield;
  * @copyright  2023 onwards WIDE Services {@link https://www.wideservices.gr}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class usersearch implements \renderable, \templatable {
+class users implements \renderable, \templatable {
     /**
      * Implementation of exporter from templatable interface
      *
@@ -110,7 +110,7 @@ class usersearch implements \renderable, \templatable {
         // Create datetime field.
         $timecreatedfield = new datefield(
             'timecreated',
-            ['class' => 'form-control', 'data-index' => 11, 'placeholder' => get_string('columntimecreated', 'local_registration')]
+            ['class' => 'form-control datetime', 'data-index' => 11, 'placeholder' => get_string('columntimecreated', 'local_registration')]
         );
         $data['timecreatedfield'] = $timecreatedfield->render($output);
 

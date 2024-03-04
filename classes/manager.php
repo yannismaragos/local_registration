@@ -457,7 +457,7 @@ class manager {
             $message->fullmessagehtml = get_string('notifytenant:body' . $langtype, 'local_registration');
             $message->smallmessage = get_string('notifytenant:subject' . $langtype, 'local_registration');
             $message->notification = 1;
-            $message->contexturl = new moodle_url('/local/registration/index.php');
+            $message->contexturl = new moodle_url('/local/registration/users.php');
             $message->contexturlname = get_string('notifytenant:contexturlname', 'local_registration');
 
             // Send the message.
