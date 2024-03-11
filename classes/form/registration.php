@@ -29,6 +29,7 @@ defined('MOODLE_INTERNAL') || die();
 use local_registration\manager;
 use moodle_url;
 use local_registration\encryptor;
+use local_registration\helper\Router;
 
 require_once("$CFG->libdir/formslib.php");
 
@@ -60,6 +61,7 @@ class registration extends \moodleform {
         $tenantid = 0;
         $manager = new manager();
         $encryptor = new encryptor(manager::ENCRYPTION_KEY);
+        $router = new Router();
 
         // Instantiate the form.
         $mform = $this->_form;
@@ -69,7 +71,7 @@ class registration extends \moodleform {
             $record = $manager->get_registration_record($id);
 
             if (empty($record)) {
-                redirect(
+                $router->redirect(
                     new moodle_url('/'),
                     get_string('recordmissingerror', 'local_registration'),
                     null,
@@ -79,7 +81,7 @@ class registration extends \moodleform {
 
             // Has the user been notified?
             if ((int) $record->approved !== manager::REGISTRATION_NOTIFIED) {
-                redirect(
+                $router->redirect(
                     new moodle_url('/'),
                     get_string('notifiedaccesserror', 'local_registration'),
                     null,
@@ -90,7 +92,7 @@ class registration extends \moodleform {
             // Get the hash from the url.
             $hash = optional_param('hash', 0, PARAM_RAW);
             if (empty($hash)) {
-                redirect(
+                $router->redirect(
                     new moodle_url('/'),
                     get_string('hashmissingerror', 'local_registration'),
                     null,
@@ -100,7 +102,7 @@ class registration extends \moodleform {
 
             // Validate hash.
             if ($encryptor->decrypt($hash) !== $record->email) {
-                redirect(
+                $router->redirect(
                     new moodle_url('/'),
                     get_string('hashmissingerror', 'local_registration'),
                     null,
@@ -127,7 +129,7 @@ class registration extends \moodleform {
             // Get the tenant id from the url.
             $tenantid = optional_param('tenantid', 0, PARAM_INT);
             if (!$tenantid) {
-                redirect(
+                $router->redirect(
                     new moodle_url('/'),
                     get_string('tenantidmissingerror', 'local_registration'),
                     null,
@@ -137,7 +139,7 @@ class registration extends \moodleform {
 
             // Check if tenant exists.
             if (!$manager->tenant_exists($tenantid)) {
-                redirect(
+                $router->redirect(
                     new moodle_url('/'),
                     get_string('tenantidinvaliderror', 'local_registration'),
                     null,

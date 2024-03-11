@@ -59,6 +59,11 @@ class querybuilder extends dtquerybuilder {
                 '1' => get_string('yes'),
             ],
             'country' => get_string_manager()->get_list_of_countries(true),
+            // 'test' => [
+            //     'sql:' => "(CASE WHEN lr.assessor IS NOT NULL THEN 1 ELSE 0 END)",
+            //     '0' => get_string('no'),
+            //     '1' => get_string('yes'),
+            // ]
         ];
 
         $columnsjoins = $this->map_options_to_join($tablealias, $columns);

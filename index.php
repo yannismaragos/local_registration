@@ -15,77 +15,34 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Users table.
+ * Index file for the application.
+ *
+ * This file serves as the entry point for the application.
+ * It includes the necessary configuration file and handles the routing logic.
  *
  * @package    local_registration
  * @copyright  2023 onwards WIDE Services {@link https://www.wideservices.gr}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use tool_tenant\manager;
-use tool_tenant\tenancy;
-use core\notification;
-use local_registration\output\usersearch;
-
+// phpcs:ignore moodle.Files.RequireLogin.Missing
 require_once(__DIR__ . '/../../config.php');
-require_login();
 
-$PAGE->set_url(new moodle_url('/local/registration/index.php'));
-$PAGE->set_context(context_system::instance());
+// Get the view and task from the url.
+$view = optional_param('view', 'form', PARAM_ALPHA);
+$task = optional_param('task', 'display', PARAM_ALPHAEXT);
 
-// Access control.
-$istenantadmin = manager::is_tenant_admin(tenancy::get_tenant_id(), $USER->id);
+// Loads the required controller class.
+$controller = 'local_registration\\controller\\' . ucfirst($view);
 
-if (
-    !is_siteadmin() && !$istenantadmin
-) {
-    $output = $PAGE->get_renderer('local_registration');
-    echo $output->header();
-    notification::error(get_string('errorcapability', 'local_registration'));
-    echo $output->footer();
-    exit;
+if (!class_exists($controller)) {
+    throw new moodle_exception('viewerror', 'local_registration', ucfirst($view));
 }
 
-$PAGE->requires->strings_for_js(
-    [
-        'duplicate',
-        'notified',
-        'approve',
-        'reject',
-        'rejectreason',
-        'notify',
-        'notifyreason',
-    ],
-    'local_registration'
-);
+$instance = new $controller();
 
-$PAGE->requires->strings_for_js(
-    [
-        'no',
-        'yes',
-    ],
-    'core'
-);
+if (!method_exists($instance, $task)) {
+    throw new moodle_exception('taskerror', 'local_registration', ucfirst($task));
+}
 
-$PAGE->set_title(get_string('usersearchtitle', 'local_registration'));
-$PAGE->set_heading(get_string('pluginname', 'local_registration'));
-
-$PAGE->requires->css(new moodle_url('/local/registration/style/custom.css'));
-$PAGE->requires->css(new moodle_url('/local/datatables/style/custom.css'));
-$PAGE->requires->css(new moodle_url('/local/datatables/style/bootstrap-select/bootstrap-select.min.css'));
-$PAGE->requires->css(new moodle_url('/local/datatables/style/datatables/buttons.bootstrap4.min.css'));
-$PAGE->requires->css(new moodle_url('/local/datatables/style/datatables/buttons.dataTables.min.css'));
-$PAGE->requires->css(new moodle_url('/local/datatables/style/datatables/dataTables.bootstrap4.min.css'));
-$PAGE->requires->css(new moodle_url('/local/datatables/style/datatables/jquery.dataTables.min.css'));
-$PAGE->requires->css(new moodle_url('/local/datatables/style/datatables/responsive.bootstrap4.min.css'));
-$PAGE->requires->css(new moodle_url('/local/datatables/style/datatables/responsive.dataTables.min.css'));
-$PAGE->requires->css(new moodle_url('/local/datatables/style/datatables/dataTables.dateTime.min.css'));
-
-$output = $PAGE->get_renderer('local_registration');
-
-echo $output->header();
-
-$outputpage = new usersearch();
-echo $output->render($outputpage);
-
-echo $output->footer();
+$instance->$task();

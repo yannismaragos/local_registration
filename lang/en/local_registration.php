@@ -25,52 +25,53 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = "User registration";
+$string['pluginname'] = 'User registration';
+$string['plugindescription'] = 'User registration plugin description';
 
-$string['falseaction'] = 'Action not supported in this version.';
-$string['falsemode'] = 'Mode not supported in this version.';
-$string['basedescription'] = 'Base description text.';
+$string['viewerror'] = 'View not found.';
+$string['taskerror'] = 'Task not found.';
 
 // Registration form.
-$string['formtitle'] = "Registration form";
-$string['firstname'] = "First name";
-$string['firstname_help'] = "Enter your first name.";
-$string['lastname'] = "Last name";
-$string['lastname_help'] = "Enter your last name.";
-$string['email'] = "Email";
-$string['email_help'] = "Enter your email.";
-$string['country'] = "Country";
-$string['country_help'] = "Select a country.";
-$string['gender'] = "Gender";
-$string['gender_help'] = "Select your gender.";
-$string['position'] = "Position";
-$string['position_help'] = "Enter your position.";
-$string['domain'] = "Domain";
-$string['domain_help'] = "Select a domain.";
+$string['formtitle'] = 'Registration form';
+$string['formdescription'] = 'Registration form description text.';
+$string['firstname'] = 'First name';
+$string['firstname_help'] = 'Enter your first name.';
+$string['lastname'] = 'Last name';
+$string['lastname_help'] = 'Enter your last name.';
+$string['email'] = 'Email';
+$string['email_help'] = 'Enter your email.';
+$string['country'] = 'Country';
+$string['country_help'] = 'Select a country.';
+$string['gender'] = 'Gender';
+$string['gender_help'] = 'Select your gender.';
+$string['position'] = 'Position';
+$string['position_help'] = 'Enter your position.';
+$string['domain'] = 'Domain';
+$string['domain_help'] = 'Select a domain.';
 $string['comments'] = 'Comments';
 $string['comments_help'] = 'Enter additional comments regarding your registration.';
-$string['interests'] = "Fields of interest";
-$string['interests_help'] = "Choose your fields of interest from the drop-down menu.";
-$string['select'] = "Select";
+$string['interests'] = 'Fields of interest';
+$string['interests_help'] = 'Choose your fields of interest from the drop-down menu.';
+$string['select'] = 'Select';
 $string['policies'] = 'I have reviewed and hereby acknowledge my acceptance of the following documents: {$a}.';
 $string['registrationstarted'] = 'Your registration process has begun. Please check your inbox for a confirmation email.
 Click on the provided link to confirm your email within the next {$a} hours. After this period your registration will be discarded and you will need to register again.';
 $string['registrationupdated'] = 'Your registration data has been successfully updated.';
-$string['confirmationemailsent'] = "Confirmation email sent";
+$string['confirmationemailsent'] = 'Confirmation email sent';
 $string['alreadyregistered'] = 'This email address is already registered. If you have an account, please log in';
 
 // Field validations.
-$string['fieldempty'] = "This field cannot be empty.";
-$string['emailempty'] = "Please enter your email.";
-$string['emailinvalid'] = "Please enter a valid email address.";
-$string['countryempty'] = "Please select a country.";
-$string['genderempty'] = "Please select a gender.";
-$string['positionempty'] = "Please enter your position.";
-$string['domainempty'] = "Please select a domain.";
-$string['interestsempty'] = "Please select a field of interest.";
+$string['fieldempty'] = 'This field cannot be empty.';
+$string['emailempty'] = 'Please enter your email.';
+$string['emailinvalid'] = 'Please enter a valid email address.';
+$string['countryempty'] = 'Please select a country.';
+$string['genderempty'] = 'Please select a gender.';
+$string['positionempty'] = 'Please enter your position.';
+$string['domainempty'] = 'Please select a domain.';
+$string['interestsempty'] = 'Please select a field of interest.';
 $string['maxlength'] = 'Please limit your input to a maximum of {$a} characters.';
-$string['maxlength500'] = "Please limit your input to a maximum of 500 characters.";
-$string['policiesempty'] = "Please review and acknowledge acceptance of the documents provided above.";
+$string['maxlength500'] = 'Please limit your input to a maximum of 500 characters.';
+$string['policiesempty'] = 'Please review and acknowledge acceptance of the documents provided above.';
 $string['firstnamelengtherror'] = 'First name length should not exceed {$a} characters.';
 $string['lastnamelengtherror'] = 'Last name length should not exceed {$a} characters.';
 $string['emaillengtherror'] = 'Email length should not exceed {$a} characters.';
@@ -80,35 +81,35 @@ $string['positionlengtherror'] = 'Position length should not exceed {$a} charact
 $string['domainlengtherror'] = 'Domain length should not exceed {$a} characters.';
 $string['commentslengtherror'] = 'Comments length should not exceed 500 characters.';
 $string['interestslengtherror'] = 'Interests length should not exceed {$a} characters.';
-$string['erroruserexists'] = "The email provided is already associated with an existing account. If you have an account, please log in.";
-$string['erroremailexists'] = "The email provided is already associated with an existing record.";
-$string['erroremailrejected'] = "The email provided has been rejected.";
+$string['erroruserexists'] = 'The email provided is already associated with an existing account. If you have an account, please log in.';
+$string['erroremailexists'] = 'The email provided is already associated with an existing record.';
+$string['erroremailrejected'] = 'The email provided has been rejected.';
 
 // Action buttons.
-$string['register'] = "Register";
-$string['edit'] = "Edit";
+$string['register'] = 'Register';
+$string['edit'] = 'Edit';
 $string['submit'] = 'Submit';
 
 // Review page.
-$string['reviewdatatitle'] = "Review registration data";
+$string['reviewdatatitle'] = 'Review registration data';
 
 // Confirm page.
-$string['confirmtitle'] = "Email confirmation";
+$string['confirmtitle'] = 'Email confirmation';
 $string['emailconfirmed'] = 'Your registration has been confirmed. Please await approval from your manager before accessing the platform.';
 $string['emailconfirmedtrusted'] = 'Your registration is now confirmed, and your user account has been successfully created. ' .
     'An email has been sent to your address, confirming the registration and providing a temporary password. ' .
     'Please ensure to update this password during your initial login to the platform.';
 $string['emailalreadyconfirmed'] = 'Your registration has already been confirmed.';
-$string['errorinvalidhash'] = "Invalid confirmation link. The provided hash value is incorrect or has expired.";
-$string['erroremailconfirm'] = "There was an error while confirming your registration. Please try again later or contact support for assistance.";
+$string['errorinvalidhash'] = 'Invalid confirmation link. The provided hash value is incorrect or has expired.';
+$string['erroremailconfirm'] = 'There was an error while confirming your registration. Please try again later or contact support for assistance.';
 
 // Messages.
-$string['recordmissingerror'] = "The URL did not include a valid record id";
-$string['hashmissingerror'] = "The URL did not include a valid hash";
-$string['tenantidmissingerror'] = "The URL did not include a tenant id.";
-$string['tenantidinvaliderror'] = "The URL did not include a valid tenant id.";
-$string['emptysessiondata'] = "Session data is empty. Please try again.";
-$string['notifiedaccesserror'] = "You do not have the necessary permissions to edit this form.";
+$string['recordmissingerror'] = 'The URL did not include a valid record id';
+$string['hashmissingerror'] = 'The URL did not include a valid hash';
+$string['tenantidmissingerror'] = 'The URL did not include a tenant id.';
+$string['tenantidinvaliderror'] = 'The URL did not include a valid tenant id.';
+$string['emptysessiondata'] = 'Session data is empty. Please try again.';
+$string['notifiedaccesserror'] = 'You do not have the necessary permissions to edit this form.';
 
 // Misc.
 $string['workplacemenuitemtitle'] = 'User registration';
@@ -157,8 +158,8 @@ Best regards,
 {$a->admin}';
 
 // Datatables.
-$string['usersearchtitle'] = 'Pending User Registrations';
-$string['usersearch'] = 'Pending User Registrations';
+$string['userstitle'] = 'Pending User Registrations';
+$string['users'] = 'Pending User Registrations';
 
 $string['columnfirstname'] = 'First name';
 $string['columnlastname'] = 'Last name';
@@ -199,7 +200,7 @@ $string['modal:approvetitle'] = 'Approve user';
 $string['modal:approvedesc'] = 'Are you sure you want to approve this user?';
 $string['modal:rejecttitle'] = 'Reject user';
 $string['modal:notifytitle'] = 'Notify user';
-$string['modal:reasonempty'] = "This field cannot be empty.";
+$string['modal:reasonempty'] = 'This field cannot be empty.';
 $string['reasonlengtherror'] = 'Text should not exceed 500 characters.';
 $string['modal:rejectreason'] = 'Reason';
 $string['modal:rejectreason_help'] = 'Enter reason for rejection.';
