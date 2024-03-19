@@ -26,7 +26,7 @@
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_registration;
+namespace local_registration\datatables;
 
 use local_datatables\ssp\dtpostprocessor;
 use local_registration\manager;
