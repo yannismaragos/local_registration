@@ -25,14 +25,13 @@
 use tool_tenant\manager;
 use tool_tenant\tenancy;
 use core\notification;
-use local_datatables\datatable;
 use local_registration\output\users;
 
 require_once(__DIR__ . '/../../config.php');
 require_login();
 
 $PAGE->set_url(new moodle_url('/local/registration/users.php'));
-$PAGE->set_context(context_system::instance());
+$PAGE->set_context(\core\context\system::instance());
 
 // Access control.
 $istenantadmin = manager::is_tenant_admin(tenancy::get_tenant_id(), $USER->id);
@@ -46,23 +45,6 @@ if (
     echo $output->footer();
     exit;
 }
-
-// Get url for datatable localization file.
-$lang = explode('_', current_language());
-$locale = $lang[0];
-
-$dtbstringsurl =
-    (new moodle_url(
-        '/local/datatables/lang/' . $locale . '/datatable_strings.php',
-        ['sesskey' => sesskey()]
-    ))->out();
-
-// Init datatable.
-$PAGE->requires->js_call_amd(
-    'local_datatables/init/datatable',
-    'init',
-    ['dtbstringsurl' => $dtbstringsurl]
-);
 
 $PAGE->requires->strings_for_js(
     [
@@ -91,14 +73,16 @@ $PAGE->set_heading(get_string('pluginname', 'local_registration'));
 $PAGE->requires->css(new moodle_url('/local/registration/style/custom.css'));
 $PAGE->requires->css(new moodle_url('/local/datatables/style/custom.css'));
 $PAGE->requires->css(new moodle_url('/local/datatables/style/bootstrap-select/bootstrap-select.min.css'));
-datatable::load_css($PAGE);
+$PAGE->requires->css(new moodle_url('/local/datatables/style/datatables/buttons.bootstrap4.min.css'));
+$PAGE->requires->css(new moodle_url('/local/datatables/style/datatables/buttons.dataTables.min.css'));
+$PAGE->requires->css(new moodle_url('/local/datatables/style/datatables/dataTables.bootstrap4.min.css'));
+$PAGE->requires->css(new moodle_url('/local/datatables/style/datatables/jquery.dataTables.min.css'));
+$PAGE->requires->css(new moodle_url('/local/datatables/style/datatables/responsive.bootstrap4.min.css'));
+$PAGE->requires->css(new moodle_url('/local/datatables/style/datatables/responsive.dataTables.min.css'));
 
 $output = $PAGE->get_renderer('local_registration');
 
 echo $output->header();
-
-// Display filters.
-// echo $OUTPUT->render_from_template('local_datatables/filters', []);
 
 // Display table.
 $outputpage = new users();

@@ -43,7 +43,7 @@ class querybuilder extends dtquerybuilder {
      */
     public function build_select($requestdata, $tableid) {
         // Define the columns to be selected.
-        $query = "SELECT lr.*, t.name as tenantname ";
+        $query = "SELECT lr.*, t.name as tenantname";
 
         // Return the query.
         return $query;

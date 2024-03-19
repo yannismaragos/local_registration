@@ -1,6 +1,6 @@
 <h2 class="dtitle_users" style="text-align: center;background-color:#f0f8ff;">{{#str}}users,local_registration{{/str}}</h2>
 
-<table id="users" class="display custom_datatable hidden" cellspacing="0" width="100%">
+<table id="users" class="display hidden" cellspacing="0" width="100%">
     <thead>
         <tr>
             <th></th>
@@ -36,113 +36,9 @@
     </thead>
 </table>
 
-{{!{{#js}}
-{{!    require(['local_registration/users'], function(Users) {
-{{!        Users.init();
-{{!    });
-{{!{{/js}}
-
-<script>
-    {{#js}}
-     let Helper = null;
-    require(['local_datatables/datatables/dataTables.helper'], function(Helpercopy) {
- Helper = Helpercopy;
+{{#js}}
+    require(['local_registration/users'], function(Users) {
+        Users.init();
     });
-        // Set the columns for the datatable.
-        const tableid = 'users';
-        M.local_datatables = {};
-        M.local_datatables.extraDtConfig[tableid] = {
-            tableid: tableid,
-            namespace: 'local_registration',
-            order: [10, 'desc'],
-            initComplete : function() {
-                // additional initComplete functionality.
-                console.log('Additional initComplete functionality.');
+{{/js}}
 
-                let tableobj = $('#users').DataTable();
-
-                // Create modal forms on buttons click
-                tableobj.on('click', '.btn-approve',
-                    Helper.createModalForm(tableobj, 'approve', 'modal:approvetitle', 'modal:approvesuccess', 'local_registration'));
-
-                tableobj.on('click', '.btn-reject',
-                    Helper.createModalForm(tableobj, 'reject', 'modal:rejecttitle', 'modal:rejectsuccess', 'local_registration'));
-
-                tableobj.on('click', '.btn-notify',
-                    Helper.createModalForm(tableobj, 'notify', 'modal:notifytitle', 'modal:notifysuccess', 'local_registration'));
-            },
-            columns: [
-                // Data: data to display,
-                // name: Raw data column name.
-                // orderable: column name for ordering.
-                // searchable: column name for searching.
-                {defaultContent: ''},
-                {data: "firstname", name: "firstname"},
-                {data: "lastname", name: "lastname"},
-                {
-                    data: "email", name: "email",
-                    render: function(data, type, row) {
-                        if (row.notified == 1) {
-                            return row.email + '<br><span class="badge bg-warning">' +
-                                M.util.get_string("notified", "local_registration") + '</span>';
-                        } else {
-                            return row.email;
-                        }
-                    }
-                },
-                {data: "tenantname", name: "t.id", orderable: "t.name", searchable: "equals||t.name"},
-                {
-                    data: "country_formatted", name: "country",
-                    orderable: "country_text", searchable: "equals||country_text"},
-                {data: "gender", name: "gender", searchable: "equals"},
-                {data: "domain", name: "domain", searchable: "equals"},
-                {
-                    data: 'comments',
-                    name: 'comments',
-                    render: function (data, type, row) {
-                        const moreTextLength = 50;
-
-                        if (type === 'display' && data.length > moreTextLength) {
-                            var moreButtonText = "{{#str}}more,local_datatables{{/str}}";
-                            return '<span class="show-more">' + data.substr(0, moreTextLength) + '... ' +
-                                    '<span class="btn-link show-more-button">' + moreButtonText + '</span></span>';
-                        } else {
-                            return data;
-                        }
-                    }
-                },
-                {data: "interests_formatted", name: "interests"},
-                {
-                    data: "confirmed_formatted", name: "confirmed",
-                    orderable: "confirmed_text", searchable: "equals||confirmed_text"
-                },
-                {data: "timecreated_formatted", name: "lr.timecreated", searchable: "datetime"},
-                {
-                    data: {},
-                    render: function(data) {
-                        var btnApprove = '<button class="btn btn-success btn-sm btn-approve" ' +
-                        'data-action="approve" data-id="' + data.id + '">' +
-                            M.util.get_string('approve', 'local_registration') + '</button>';
-
-                        var btnReject = '<button class="btn btn-danger btn-sm btn-reject" ' +
-                        'data-action="reject" data-id="' + data.id + '">' +
-                            M.util.get_string('reject', 'local_registration') + '</button>';
-
-                        var btnNotify = '';
-                        if (data.notified !== 1) {
-                            btnNotify = '<button class="btn btn-warning btn-sm btn-notify" ' +
-                        'data-action="notify" data-id="' + data.id + '">' +
-                            M.util.get_string('notify', 'local_registration') + '</button>';
-                        }
-
-                        return '<span class="buttons" data-value="' + data.id + '">' +
-                            btnApprove + btnReject + btnNotify + ' </span>';
-                    },
-                    name: "actions",
-                    orderable: false,
-                    searchable: false
-                },
-            ],
-        };
-    {{/js}}
-</script>
