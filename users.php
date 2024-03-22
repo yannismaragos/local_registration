@@ -71,7 +71,7 @@ $PAGE->set_title(get_string('userstitle', 'local_registration'));
 $PAGE->set_heading(get_string('pluginname', 'local_registration'));
 
 $PAGE->requires->css(new moodle_url('/local/registration/style/custom.css'));
-$PAGE->requires->css(new moodle_url('/local/datatables/style/custom.css'));
+$PAGE->requires->css(new moodle_url('/local/datatables/style/custom.min.css'));
 $PAGE->requires->css(new moodle_url('/local/datatables/style/bootstrap-select/bootstrap-select.min.css'));
 $PAGE->requires->css(new moodle_url('/local/datatables/style/datatables/buttons.bootstrap4.min.css'));
 $PAGE->requires->css(new moodle_url('/local/datatables/style/datatables/buttons.dataTables.min.css'));
