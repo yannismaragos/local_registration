@@ -43,7 +43,7 @@ class querybuilder extends dtquerybuilder {
      */
     public function build_select($requestdata, $tableid) {
         // Define the columns to be selected.
-        $query = "SELECT lr.*, t.name as tenantname";
+        $query = "SELECT lr.*, t.name as tenantname, assessor_text";
 
         // Return the query.
         return $query;
@@ -52,25 +52,34 @@ class querybuilder extends dtquerybuilder {
     public function build_sql($requestdata, $tableid) {
         $tablealias = 'lr';
 
-        // Build columns options JOIN.
+        // Map options to columns.
         $columns = [
             'confirmed' => [
                 '0' => get_string('no'),
                 '1' => get_string('yes'),
             ],
             'country' => get_string_manager()->get_list_of_countries(true),
-            // 'test' => [
-            //     'sql:' => "(CASE WHEN lr.assessor IS NOT NULL THEN 1 ELSE 0 END)",
-            //     '0' => get_string('no'),
-            //     '1' => get_string('yes'),
-            // ]
         ];
+        $columnsmappings = $this->map_options_to_columns($tablealias, $columns);
 
-        $columnsjoins = $this->map_options_to_join($tablealias, $columns);
+        // Map options to sql expression (assessor).
+        $assessorexp = "(CASE WHEN $tablealias.assessor IS NOT NULL THEN 0 ELSE 1 END)";
+        $assessoropt = [
+            '0' => get_string('no'),
+            '1' => get_string('yes'),
+        ];
+        $assessormapping = $this->map_options_for_sql_case_expression(
+            'local_registration',
+            $tablealias,
+            'assessor',
+            $assessorexp,
+            $assessoropt
+        );
 
+        // Join tenant table.
         $tenantjoin = "LEFT JOIN {tool_tenant} t ON t.id = $tablealias.tenantid";
 
-        $query = "FROM {local_registration} $tablealias $columnsjoins $tenantjoin
+        $query = "FROM {local_registration} $tablealias $columnsmappings $assessormapping $tenantjoin
             WHERE $tablealias.confirmed IN (0, 1) AND $tablealias.approved IN (0, -2)";
 
         return $query;

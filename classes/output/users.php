@@ -114,6 +114,14 @@ class users implements \renderable, \templatable {
         );
         $data['timecreatedfield'] = $timecreatedfield->render($output);
 
+        // Create boolean select field (Yes, No).
+        $assessorfield = new selectfield(
+            'assessor',
+            ['class' => 'selectpicker form-control', 'data-index' => 12],
+            'yes_no'
+        );
+        $data['assessorfield'] = $assessorfield->render($output);
+
         return $data;
     }
 }

@@ -76,6 +76,7 @@ $PAGE->requires->css(new moodle_url('/local/datatables/style/bootstrap-select/bo
 $PAGE->requires->css(new moodle_url('/local/datatables/style/datatables/buttons.bootstrap4.min.css'));
 $PAGE->requires->css(new moodle_url('/local/datatables/style/datatables/buttons.dataTables.min.css'));
 $PAGE->requires->css(new moodle_url('/local/datatables/style/datatables/dataTables.bootstrap4.min.css'));
+$PAGE->requires->css(new moodle_url('/local/datatables/style/datatables/dataTables.dateTime.min.css'));
 $PAGE->requires->css(new moodle_url('/local/datatables/style/datatables/jquery.dataTables.min.css'));
 $PAGE->requires->css(new moodle_url('/local/datatables/style/datatables/responsive.bootstrap4.min.css'));
 $PAGE->requires->css(new moodle_url('/local/datatables/style/datatables/responsive.dataTables.min.css'));

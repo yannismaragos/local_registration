@@ -119,7 +119,7 @@ define([
                 ],
                 columns: [
                     // Data: data to display,
-                    // name: Raw data column name.
+                    // name: Raw data column name (could be an alias column name).
                     // orderable: column name for ordering.
                     // searchable: column name for searching.
                     {defaultContent: ''},
@@ -149,7 +149,7 @@ define([
                         orderable: "confirmed_text", searchable: "equals||confirmed_text"
                     },
                     {data: "timecreated_formatted", name: "lr.timecreated", searchable: "datetime"},
-                    {data: "assessor_text", name: "lr.assessor", orderable: "assessor_text",
+                    {data: "assessor_text", name: "assessor_expr", orderable: "assessor_text",
                         searchable: "assessor_expr||assessor_text"},
                     {
                         data: {},

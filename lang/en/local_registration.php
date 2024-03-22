@@ -173,6 +173,7 @@ $string['columncomments'] = 'Comments';
 $string['columninterests'] = 'Fields of interest';
 $string['columnconfirmed'] = 'Confirmed';
 $string['columntimecreated'] = 'Created';
+$string['assessor'] = 'Assessor';
 $string['duplicate'] = 'Duplicate of user: ';
 $string['notified'] = 'Notified';
 $string['actions'] = 'Actions';
