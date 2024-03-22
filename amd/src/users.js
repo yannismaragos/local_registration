@@ -23,7 +23,7 @@ define([
     moment,
     ) {
     var init = function() {
-        document.addEventListener('DOMContentLoaded', () => {
+        $(function() {
             var tableid = '#users';
             var orderColumn = 1; // Set the default ordering column index
 
@@ -149,6 +149,8 @@ define([
                         orderable: "confirmed_text", searchable: "equals||confirmed_text"
                     },
                     {data: "timecreated_formatted", name: "lr.timecreated", searchable: "datetime"},
+                    {data: "assessor_text", name: "lr.assessor", orderable: "assessor_text",
+                        searchable: "assessor_expr||assessor_text"},
                     {
                         data: {},
                         render: function(data) {
@@ -225,13 +227,13 @@ define([
 
             // Create modal forms on buttons click
             table.on('click', '.btn-approve',
-                Helper.createModalForm(table, 'approve', 'modal:approvetitle', 'modal:approvesuccess'));
+                Helper.createModalForm(table, 'approve', 'modal:approvetitle', 'modal:approvesuccess', 'local_registration'));
 
             table.on('click', '.btn-reject',
-                Helper.createModalForm(table, 'reject', 'modal:rejecttitle', 'modal:rejectsuccess'));
+                Helper.createModalForm(table, 'reject', 'modal:rejecttitle', 'modal:rejectsuccess', 'local_registration'));
 
             table.on('click', '.btn-notify',
-                Helper.createModalForm(table, 'notify', 'modal:notifytitle', 'modal:notifysuccess'));
+                Helper.createModalForm(table, 'notify', 'modal:notifytitle', 'modal:notifysuccess', 'local_registration'));
 
             // Reset filters
             table.on('click', '.reset-filters', function() {
