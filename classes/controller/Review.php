@@ -41,6 +41,7 @@ class Review extends Base {
      */
     public function __construct() {
         global $SESSION;
+        parent::__construct();
         $this->router = new Router();
 
         // Check for empty session variable.

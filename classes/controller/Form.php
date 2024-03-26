@@ -49,6 +49,7 @@ class Form extends Base {
      * Class contructor.
      */
     public function __construct() {
+        parent::__construct();
         $this->router = new Router();
         $this->context = 'system';
         $tenantid = optional_param('tenantid', null, PARAM_INT);
