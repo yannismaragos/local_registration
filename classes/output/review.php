@@ -26,7 +26,6 @@ namespace local_registration\output;
 
 use renderer_base;
 use local_registration\model\Review as ReviewModel;
-use local_registration\manager;
 use moodle_url;
 use single_button;
 
@@ -66,8 +65,7 @@ class review implements \renderable, \templatable {
         $sessiondata = $SESSION->local_registration;
 
         // Format data for display.
-        $manager = new manager();
-        $formatteddata = $manager->format_data($sessiondata);
+        $formatteddata = $this->model->format_data($sessiondata);
         $indexeddata = array_map(function ($key, $value) {
             return ['key' => $key, 'value' => $value];
         }, array_keys($formatteddata), $formatteddata);

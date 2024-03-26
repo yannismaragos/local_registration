@@ -17,6 +17,7 @@
 namespace local_registration\model;
 
 use local_registration\model\Base as BaseModel;
+use tool_tenant\tenancy;
 
 /**
  * Review model class.
@@ -28,9 +29,50 @@ use local_registration\model\Base as BaseModel;
  */
 class Review extends BaseModel {
     /**
-     * Class constructor.
+     * Formats and reindexes the given data array.
+     *
+     * It includes the retrieval of tenant information, converts interests
+     * into a comma-separated string, converts country codes to names,
+     * reindexes the array with predefined labels, and removes the 'policies'
+     * field.
+     *
+     * @param array $data The input data array to be formatted.
+     *
+     * @return array The formatted data array with keys reindexed according to
+     *               predefined labels.
      */
-    public function __construct($config = []) {
-        parent::__construct($config);
+    public function format_data(array $data): array {
+
+        // Format fields.
+        $tenantname = tenancy::get_tenant_name_from_id($data['tenantid']);
+        $data['tenantid'] = $tenantname;
+        $data['interests'] = implode(', ', $data['interests']);
+        $allcountries = get_string_manager()->get_list_of_countries(true);
+        $data['country'] = $allcountries[$data['country']];
+
+        $labels = [
+            'id',
+            'hash',
+            'Tenant',
+            'First name',
+            'Last name',
+            'Email',
+            'Country',
+            'Gender',
+            'Position',
+            'Domain',
+            'Comments',
+            'Fields of interest',
+            'policies',
+        ];
+
+        // Reindex $data with $labels.
+        $data = array_combine($labels, $data);
+
+        unset($data['id']);
+        unset($data['hash']);
+        unset($data['policies']);
+
+        return $data;
     }
 }
