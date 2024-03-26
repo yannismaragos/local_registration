@@ -18,7 +18,7 @@
  * Review output file.
  *
  * @package    local_registration
- * @copyright  2022 WIDE Services
+ * @copyright  2024 WIDE Services
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -26,6 +26,9 @@ namespace local_registration\output;
 
 use renderer_base;
 use local_registration\model\Review as ReviewModel;
+use local_registration\manager;
+use moodle_url;
+use single_button;
 
 /**
  * Review output class.
@@ -57,7 +60,38 @@ class review implements \renderable, \templatable {
      * @throws \moodle_exception
      */
     public function export_for_template(renderer_base $output): array {
+        global $SESSION;
+
+        // Get data from session.
+        $sessiondata = $SESSION->local_registration;
+
+        // Format data for display.
+        $manager = new manager();
+        $formatteddata = $manager->format_data($sessiondata);
+        $indexeddata = array_map(function ($key, $value) {
+            return ['key' => $key, 'value' => $value];
+        }, array_keys($formatteddata), $formatteddata);
         $data = [];
+
+        $editurl = new moodle_url(
+            '/local/registration/index.php',
+            ['tenantid' => $SESSION->local_registration['tenantid']],
+        );
+        $submiturl = new moodle_url(
+            '/local/registration/index.php',
+            [
+                'tenantid' => $SESSION->local_registration['tenantid'],
+                'task' => 'submit',
+            ],
+        );
+        $editbutton = $output->render(new single_button($editurl, get_string('edit', 'local_registration'), 'get'));
+        $submitbutton = $output->render(
+            new single_button($submiturl, get_string('submit', 'local_registration'), 'post', single_button::BUTTON_PRIMARY)
+        );
+
+        $data['reviewdata'] = $indexeddata;
+        $data['editbutton'] = $editbutton;
+        $data['submitbutton'] = $submitbutton;
 
         return $data;
     }

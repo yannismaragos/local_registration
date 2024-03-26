@@ -78,6 +78,24 @@ abstract class Base {
     }
 
     /**
+     * Retrieves the title of the page.
+     *
+     * @return string The title of the page.
+     */
+    protected function get_title(): string {
+        return get_string('pluginname', 'local_registration');
+    }
+
+    /**
+     * Retrieves the description of the page.
+     *
+     * @return string|null The description of the page, or null if no description is available.
+     */
+    protected function get_description(): ?string {
+        return get_string('plugindescription', 'local_registration');
+    }
+
+    /**
      * Method to get the controller name.
      *
      * The controller name is set by default parsed using the classname, or it can be set
@@ -169,6 +187,16 @@ abstract class Base {
     }
 
     /**
+     * Abstract method for displaying the content of the page.
+     *
+     * This method is responsible for rendering the main content of the page.
+     * It should be implemented by concrete subclasses to provide specific content.
+     *
+     * @return void
+     */
+    abstract protected function display_content(): void;
+
+    /**
      * Displays the footer content using the global OUTPUT object.
      *
      * This function is responsible for rendering and outputting the footer content
@@ -181,33 +209,5 @@ abstract class Base {
         global $OUTPUT;
 
         echo $OUTPUT->footer();
-    }
-
-    /**
-     * Abstract method for displaying the content of the page.
-     *
-     * This method is responsible for rendering the main content of the page.
-     * It should be implemented by concrete subclasses to provide specific content.
-     *
-     * @return void
-     */
-    abstract protected function display_content(): void;
-
-    /**
-     * Retrieves the title of the page.
-     *
-     * @return string The title of the page.
-     */
-    protected function get_title(): string {
-        return get_string('pluginname', 'local_registration');
-    }
-
-    /**
-     * Retrieves the description of the page.
-     *
-     * @return string|null The description of the page, or null if no description is available.
-     */
-    protected function get_description(): ?string {
-        return get_string('plugindescription', 'local_registration');
     }
 }

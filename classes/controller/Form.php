@@ -61,6 +61,24 @@ class Form extends Base {
     }
 
     /**
+     * Retrieves the title of the page.
+     *
+     * @return string The title of the page.
+     */
+    protected function get_title(): string {
+        return get_string('formtitle', 'local_registration');
+    }
+
+    /**
+     * Retrieves the description of the page.
+     *
+     * @return string|null The description of the page, or null if no description is available.
+     */
+    protected function get_description(): ?string {
+        return get_string('formdescription', 'local_registration');
+    }
+
+    /**
      * Displays the main content of the page.
      *
      * This method is responsible for rendering the main content of the page,
@@ -236,23 +254,5 @@ class Form extends Base {
      */
     private function display_form(): void {
         $this->mform->display();
-    }
-
-    /**
-     * Retrieves the title of the page.
-     *
-     * @return string The title of the page.
-     */
-    protected function get_title(): string {
-        return get_string('formtitle', 'local_registration');
-    }
-
-    /**
-     * Retrieves the description of the page.
-     *
-     * @return string|null The description of the page, or null if no description is available.
-     */
-    protected function get_description(): ?string {
-        return get_string('formdescription', 'local_registration');
     }
 }
