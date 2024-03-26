@@ -28,8 +28,10 @@ defined('MOODLE_INTERNAL') || die();
 $string['pluginname'] = 'User registration';
 $string['plugindescription'] = 'User registration plugin description';
 
+// Errors.
 $string['viewerror'] = 'View not found.';
 $string['taskerror'] = 'Task not found.';
+$string['errorcontrollergetname'] = 'Controller not found for the given name: {$a->name}.';
 
 // Registration form.
 $string['formtitle'] = 'Registration form';

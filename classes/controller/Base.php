@@ -27,6 +27,11 @@ use moodle_url;
  */
 abstract class Base {
     /**
+     * @var string The name of the controller
+     */
+    protected $name;
+
+    /**
      * @var string The page context.
      */
     protected $context;
@@ -42,10 +47,47 @@ abstract class Base {
     protected $pagelayout;
 
     /**
-     * Class constructor.
+     * Constructor.
+     *
+     * @param array $config An optional associative array of configuration settings.
      */
-    public function __construct() {
-        // This constructor is empty.
+    public function __construct($config = []) {
+        // Set the view name.
+        if (empty($this->name)) {
+            if (array_key_exists('name', $config)) {
+                $this->name = $config['name'];
+            } else {
+                $this->name = $this->get_name();
+            }
+        }
+    }
+
+    /**
+     * Method to get the controller name.
+     *
+     * The controller name is set by default parsed using the classname, or it can be set
+     * by passing a $config['name'] in the class constructor.
+     *
+     * @return  string  The name of the controller.
+     * @throws  \Exception
+     */
+    public function get_name() {
+        if (empty($this->name)) {
+            $class = get_class($this);
+            $lastslashposition = strrpos($class, '\\');
+
+            if ($lastslashposition === false) {
+                throw new \Exception(get_string('errorcontrollergetname', 'local_registration', $class));
+            }
+
+            $this->name = substr($class, $lastslashposition + 1);
+
+            if (empty($this->name)) {
+                throw new \Exception(get_string('errorcontrollergetname', 'local_registration', $class));
+            }
+        }
+
+        return $this->name;
     }
 
     /**
