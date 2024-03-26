@@ -27,6 +27,8 @@
 
 namespace local_registration;
 
+use local_registration\model\Base as BaseModel;
+
 /**
  * Class factory.
  *
@@ -68,5 +70,29 @@ class Factory {
         } else {
             throw new \Exception("Class $class not found.");
         }
+    }
+
+    /**
+     * Method to load and return a model object.
+     *
+     * @param string $name The name of the model.
+     * @param array $config Optional configuration array for the model.
+     *
+     * @return BaseModel The model object.
+     * @throws  \Exception
+     */
+    public function create_model($name, array $config = []) {
+        // Clean the parameters.
+        $name = preg_replace('/[^A-Z0-9_]/i', '', $name);
+
+        $class = "\\$this->namespace\\model\\" . ucfirst($name);
+
+        if (class_exists($class)) {
+            $model = new $class($config);
+        } else {
+            throw new \Exception("Class $class not found.");
+        }
+
+        return $model;
     }
 }

@@ -18,6 +18,7 @@ namespace local_registration\controller;
 
 use moodle_url;
 use local_registration\Factory;
+use local_registration\model\Base as BaseModel;
 
 /**
  * Base controller class.
@@ -102,6 +103,28 @@ abstract class Base {
         }
 
         return $this->name;
+    }
+
+    /**
+     * Method to get a model object, loading it if required.
+     *
+     * @param string $name The model name. Optional.
+     * @param array $config Configuration array for model. Optional.
+     *
+     * @return BaseModel|boolean Model object on success; otherwise false on failure.
+     */
+    public function get_model($name = '', $config = []) {
+        if (empty($name)) {
+            $name = $this->get_name();
+        }
+
+        $model = $this->factory->create_model($name, $config);
+
+        if ($model === null) {
+            return false;
+        }
+
+        return $model;
     }
 
     /**
