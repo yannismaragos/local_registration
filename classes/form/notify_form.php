@@ -26,7 +26,7 @@ namespace local_registration\form;
 
 use core_form\dynamic_form;
 use local_registration\manager;
-use local_registration\encryptor;
+use local_registration\helper\Encryptor;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -141,7 +141,7 @@ class notify_form extends dynamic_form {
             $manager->update_registration_record($record, 'timemodified', $time->getTimestamp());
 
             // Construct url for editing registration record.
-            $encryptor = new encryptor(manager::ENCRYPTION_KEY);
+            $encryptor = new Encryptor(manager::ENCRYPTION_KEY);
             $hash = $encryptor->encrypt($record->email);
             $url = new \moodle_url('/local/registration/form.php?id=' . $id . '&hash=' . urlencode($hash));
 

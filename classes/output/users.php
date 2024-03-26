@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Registration plugin user search output file
+ * Users output file.
  *
  * @package    local_registration
  * @copyright  2022 WIDE Services

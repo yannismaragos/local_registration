@@ -19,7 +19,7 @@ namespace local_registration\controller;
 use moodle_url;
 use local_registration\controller\Base;
 use local_registration\helper\Router;
-use local_registration\encryptor;
+use local_registration\helper\Encryptor;
 use local_registration\manager;
 use tool_tenant\manager as tenantmanager;
 use html_writer;
@@ -66,7 +66,7 @@ class Confirm extends Base {
         $hash = required_param('hash', PARAM_RAW);
 
         // Decrypt the hash.
-        $encryptor = new encryptor(manager::ENCRYPTION_KEY);
+        $encryptor = new Encryptor(manager::ENCRYPTION_KEY);
         $email = $encryptor->decrypt($hash);
 
         // Get record from 'local_registration'.

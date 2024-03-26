@@ -34,7 +34,7 @@ namespace local_registration;
  * @copyright   2023 onwards WIDE Services {@link https://www.wideservices.gr}
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class encryptor {
+class Encryptor {
     /**
      * The key used for encryption and decryption.
      *

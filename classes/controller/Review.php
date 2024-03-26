@@ -20,6 +20,7 @@ use moodle_url;
 use local_registration\controller\Base;
 use local_registration\manager;
 use local_registration\helper\Router;
+use local_registration\output\review as ReviewOutput;
 use html_writer;
 use single_button;
 
@@ -54,7 +55,7 @@ class Review extends Base {
         }
 
         $this->context = 'system';
-        $this->url = new moodle_url('/local/registration/review.php');
+        $this->url = new moodle_url('/local/registration/index.php?view=review');
         $this->pagelayout = 'standard';
     }
 
@@ -66,7 +67,7 @@ class Review extends Base {
      * @return void
      */
     protected function display_content(): void {
-        global $SESSION, $OUTPUT;
+        global $SESSION, $OUTPUT, $PAGE;
 
         // Get data from session.
         $data = $SESSION->local_registration;
@@ -75,45 +76,50 @@ class Review extends Base {
         $manager = new manager();
         $formatteddata = $manager->format_data($data);
 
+        // Render template.
+        $output = $PAGE->get_renderer('local_registration');
+        $outputpage = new ReviewOutput($this->get_model());
+        echo $output->render($outputpage);
+
         // Display form data.
-        $outputhtml = '';
-        $outputhtml .= html_writer::start_tag('div', ['class' => '']);
+        // $outputhtml = '';
+        // $outputhtml .= html_writer::start_tag('div', ['class' => '']);
 
-        foreach ($formatteddata as $label => $value) {
-            $outputhtml .= html_writer::start_tag('div', ['class' => 'form-group row fitem px-3']);
-            $outputhtml .= html_writer::start_tag('div', ['class' => 'col-md-3 col-form-label d-flex pb-0 pr-md-0']);
-            $outputhtml .= $label;
-            $outputhtml .= html_writer::end_tag('div');
-            $outputhtml .= html_writer::start_tag('div', ['class' => 'col-md-9 form-inline align-items-start felement py-2']);
-            $outputhtml .= $value;
-            $outputhtml .= html_writer::end_tag('div');
-            $outputhtml .= html_writer::end_tag('div');
-        }
+        // foreach ($formatteddata as $label => $value) {
+        //     $outputhtml .= html_writer::start_tag('div', ['class' => 'form-group row fitem px-3']);
+        //     $outputhtml .= html_writer::start_tag('div', ['class' => 'col-md-3 col-form-label d-flex pb-0 pr-md-0']);
+        //     $outputhtml .= $label;
+        //     $outputhtml .= html_writer::end_tag('div');
+        //     $outputhtml .= html_writer::start_tag('div', ['class' => 'col-md-9 form-inline align-items-start felement py-2']);
+        //     $outputhtml .= $value;
+        //     $outputhtml .= html_writer::end_tag('div');
+        //     $outputhtml .= html_writer::end_tag('div');
+        // }
 
-        $outputhtml .= html_writer::end_tag('div');
+        // $outputhtml .= html_writer::end_tag('div');
 
-        // Display buttons.
-        $editurl = new moodle_url(
-            '/local/registration/index.php',
-            ['tenantid' => $SESSION->local_registration['tenantid']],
-        );
-        $submiturl = new moodle_url(
-            '/local/registration/index.php',
-            [
-                'tenantid' => $SESSION->local_registration['tenantid'],
-                'task' => 'submit',
-            ],
-        );
-        $outputhtml .= html_writer::start_tag('div', ['class' => 'form-group row  fitem femptylabel  ']);
-        $outputhtml .= html_writer::start_tag('div', ['class' => 'col-md-3 col-form-label d-flex pb-0 pr-md-0']);
-        $outputhtml .= html_writer::end_tag('div');
-        $outputhtml .= html_writer::start_tag('div', ['class' => 'col-md-9 form-inline align-items-start felement py-2']);
-        $outputhtml .= $OUTPUT->render(new single_button($editurl, get_string('edit', 'local_registration'), 'get'));
-        $outputhtml .= $OUTPUT->render(new single_button($submiturl, get_string('submit', 'local_registration'), 'post', single_button::BUTTON_PRIMARY));
-        $outputhtml .= html_writer::end_tag('div');
-        $outputhtml .= html_writer::end_tag('div');
+        // // Display buttons.
+        // $editurl = new moodle_url(
+        //     '/local/registration/index.php',
+        //     ['tenantid' => $SESSION->local_registration['tenantid']],
+        // );
+        // $submiturl = new moodle_url(
+        //     '/local/registration/index.php',
+        //     [
+        //         'tenantid' => $SESSION->local_registration['tenantid'],
+        //         'task' => 'submit',
+        //     ],
+        // );
+        // $outputhtml .= html_writer::start_tag('div', ['class' => 'form-group row  fitem femptylabel  ']);
+        // $outputhtml .= html_writer::start_tag('div', ['class' => 'col-md-3 col-form-label d-flex pb-0 pr-md-0']);
+        // $outputhtml .= html_writer::end_tag('div');
+        // $outputhtml .= html_writer::start_tag('div', ['class' => 'col-md-9 form-inline align-items-start felement py-2']);
+        // $outputhtml .= $OUTPUT->render(new single_button($editurl, get_string('edit', 'local_registration'), 'get'));
+        // $outputhtml .= $OUTPUT->render(new single_button($submiturl, get_string('submit', 'local_registration'), 'post', single_button::BUTTON_PRIMARY));
+        // $outputhtml .= html_writer::end_tag('div');
+        // $outputhtml .= html_writer::end_tag('div');
 
-        echo $outputhtml;
+        // echo $outputhtml;
     }
 
     /**

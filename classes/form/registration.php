@@ -28,7 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 
 use local_registration\manager;
 use moodle_url;
-use local_registration\encryptor;
+use local_registration\helper\Encryptor;
 use local_registration\helper\Router;
 
 require_once("$CFG->libdir/formslib.php");
@@ -60,7 +60,7 @@ class registration extends \moodleform {
         $hash = '';
         $tenantid = 0;
         $manager = new manager();
-        $encryptor = new encryptor(manager::ENCRYPTION_KEY);
+        $encryptor = new Encryptor(manager::ENCRYPTION_KEY);
         $router = new Router();
 
         // Instantiate the form.

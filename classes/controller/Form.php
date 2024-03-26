@@ -21,7 +21,7 @@ use moodle_url;
 use local_registration\controller\Base;
 use local_registration\form\registration;
 use local_registration\manager;
-use local_registration\encryptor;
+use local_registration\helper\Encryptor;
 use local_registration\helper\Router;
 use stdClass;
 use DateTime;
@@ -111,7 +111,7 @@ class Form extends Base {
         global $SESSION, $OUTPUT, $PAGE, $CFG;
 
         $manager = new manager();
-        $encryptor = new encryptor(manager::ENCRYPTION_KEY);
+        $encryptor = new Encryptor(manager::ENCRYPTION_KEY);
 
         // Check for empty session variable.
         if (empty($SESSION->local_registration)) {

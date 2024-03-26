@@ -26,6 +26,7 @@ use tool_tenant\manager;
 use tool_tenant\tenancy;
 use core\notification;
 use local_registration\output\users;
+use local_registration\controller\Users as UsersController;
 
 require_once(__DIR__ . '/../../config.php');
 require_login();
@@ -85,8 +86,8 @@ $output = $PAGE->get_renderer('local_registration');
 
 echo $output->header();
 
-// Display table.
-$outputpage = new users();
-echo $output->render($outputpage);
+$controller = new UsersController(['namespace' => 'local_registration']);
+$outputpage = new users($controller->get_model());
 
+echo $output->render($outputpage);
 echo $output->footer();
