@@ -38,10 +38,14 @@ class Review extends Base {
 
     /**
      * Class contructor.
+     *
+     * @param array $config An associative array of configuration settings. Optional.
+     * @param Factory $factory The factory. Optional.
      */
-    public function __construct() {
+    public function __construct($config = []) {
+        parent::__construct($config);
+
         global $SESSION;
-        parent::__construct();
         $this->router = new Router();
 
         // Check for empty session variable.

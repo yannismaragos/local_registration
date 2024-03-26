@@ -47,9 +47,12 @@ class Form extends Base {
 
     /**
      * Class contructor.
+     *
+     * @param array $config An associative array of configuration settings. Optional.
+     * @param Factory $factory The factory. Optional.
      */
-    public function __construct() {
-        parent::__construct();
+    public function __construct($config = []) {
+        parent::__construct($config);
         $this->router = new Router();
         $this->context = 'system';
         $tenantid = optional_param('tenantid', null, PARAM_INT);

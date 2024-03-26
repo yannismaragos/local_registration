@@ -17,19 +17,26 @@
 namespace local_registration\controller;
 
 use moodle_url;
+use local_registration\Factory;
 
 /**
  * Base controller class.
  *
  * @package    local_registration
+ * @author     Yannis Maragos <maragos.y@wideservices.gr>
  * @copyright  2024 onwards WIDE Services {@link https://www.wideservices.gr}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 abstract class Base {
     /**
-     * @var string The name of the controller
+     * @var string The name of the controller.
      */
     protected $name;
+
+    /**
+     * @var Factory The factory.
+     */
+    protected $factory;
 
     /**
      * @var string The page context.
@@ -47,11 +54,12 @@ abstract class Base {
     protected $pagelayout;
 
     /**
-     * Constructor.
+     * Class constructor.
      *
-     * @param array $config An optional associative array of configuration settings.
+     * @param array $config An associative array of configuration settings. Optional.
+     * @param Factory $factory The factory. Optional.
      */
-    public function __construct($config = []) {
+    public function __construct($config = [], Factory $factory = null) {
         // Set the view name.
         if (empty($this->name)) {
             if (array_key_exists('name', $config)) {
@@ -60,6 +68,12 @@ abstract class Base {
                 $this->name = $this->get_name();
             }
         }
+
+        if (!array_key_exists('namespace', $config)) {
+            throw new \Exception(get_string('errorcontrollernamespace', 'local_registration'));
+        }
+
+        $this->factory = $factory ?? new Factory($config['namespace']);
     }
 
     /**
@@ -68,8 +82,8 @@ abstract class Base {
      * The controller name is set by default parsed using the classname, or it can be set
      * by passing a $config['name'] in the class constructor.
      *
-     * @return  string  The name of the controller.
-     * @throws  \Exception
+     * @return string The name of the controller.
+     * @throws \Exception
      */
     public function get_name() {
         if (empty($this->name)) {

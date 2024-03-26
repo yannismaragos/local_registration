@@ -39,9 +39,12 @@ class Confirm extends Base {
 
     /**
      * Class contructor.
+     *
+     * @param array $config An associative array of configuration settings. Optional.
+     * @param Factory $factory The factory. Optional.
      */
-    public function __construct() {
-        parent::__construct();
+    public function __construct($config = []) {
+        parent::__construct($config);
         $this->context = 'system';
         $this->url = new moodle_url('/local/registration/confirm.php');
         $this->pagelayout = 'standard';

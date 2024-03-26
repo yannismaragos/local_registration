@@ -39,7 +39,7 @@ if (!class_exists($controller)) {
     throw new moodle_exception('viewerror', 'local_registration', ucfirst($view));
 }
 
-$instance = new $controller();
+$instance = new $controller(['namespace' => 'local_registration']);
 
 if (!method_exists($instance, $task)) {
     throw new moodle_exception('taskerror', 'local_registration', ucfirst($task));
