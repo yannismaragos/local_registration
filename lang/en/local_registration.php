@@ -29,8 +29,6 @@ $string['pluginname'] = 'User registration';
 $string['plugindescription'] = 'User registration plugin description';
 
 // Errors.
-$string['viewerror'] = 'View not found.';
-$string['taskerror'] = 'Task not found.';
 $string['errorcontrollergetname'] = 'Controller not found for the given name: {$a->name}.';
 $string['errorcontrollernamespace'] = 'Namespace not provided in the configuration.';
 

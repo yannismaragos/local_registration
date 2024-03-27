@@ -29,7 +29,7 @@
 namespace local_registration\datatables;
 
 use local_datatables\ssp\dtpostprocessor;
-use local_registration\manager;
+use local_registration\model\Form as FormModel;
 
 /**
  * postprocessor class.
@@ -55,7 +55,7 @@ class postprocessor extends dtpostprocessor {
         foreach ($items as $item) {
             $item->country_formatted = isset($allcountries[$item->country]) ? $allcountries[$item->country] : '';
             $item->interests_formatted = !empty(json_decode($item->interests)) ? implode('<br>', json_decode($item->interests)) : '';
-            $item->notified = $item->approved == manager::REGISTRATION_NOTIFIED ? 1 : 0;
+            $item->notified = $item->approved == FormModel::REGISTRATION_NOTIFIED ? 1 : 0;
             $item->duplicateid = 0;
             $item->confirmed_formatted = $item->confirmed == 0 ? get_string('no') : get_string('yes');
 

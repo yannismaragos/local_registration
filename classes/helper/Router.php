@@ -76,7 +76,7 @@ class Router {
 
             // Redirect via JavaScript.
             $url = $url->out(false);
-            echo '<script>document.location.href=' . \json_encode($url) . ";</script>\n";
+            echo '<script>document.location.href=' . json_encode($url) . ";</script>\n";
         } else {
             redirect($url, $message, $delay, $messagetype);
         }

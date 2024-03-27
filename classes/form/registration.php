@@ -26,10 +26,13 @@ namespace local_registration\form;
 
 defined('MOODLE_INTERNAL') || die();
 
-use local_registration\manager;
 use moodle_url;
+use local_registration\model\Form as FormModel;
 use local_registration\helper\Encryptor;
 use local_registration\helper\Router;
+use local_registration\lib\Tenant as TenantLib;
+use local_registration\lib\User as UserLib;
+use local_registration\lib\Policies as PoliciesLib;
 
 require_once("$CFG->libdir/formslib.php");
 
@@ -59,16 +62,17 @@ class registration extends \moodleform {
         $id = 0;
         $hash = '';
         $tenantid = 0;
-        $manager = new manager();
+        $model = new FormModel();
         $encryptor = new Encryptor(Encryptor::ENCRYPTION_KEY);
         $router = new Router();
+        $userlib = new UserLib();
 
         // Instantiate the form.
         $mform = $this->_form;
 
         // Get the record id from the url.
         if ($id = optional_param('id', 0, PARAM_INT)) {
-            $record = $manager->get_registration_record($id);
+            $record = $model->get_registration_record($id);
 
             if (empty($record)) {
                 $router->redirect(
@@ -80,7 +84,7 @@ class registration extends \moodleform {
             }
 
             // Has the user been notified?
-            if ((int) $record->approved !== manager::REGISTRATION_NOTIFIED) {
+            if ((int) $record->approved !== FormModel::REGISTRATION_NOTIFIED) {
                 $router->redirect(
                     new moodle_url('/'),
                     get_string('notifiedaccesserror', 'local_registration'),
@@ -138,7 +142,9 @@ class registration extends \moodleform {
             }
 
             // Check if tenant exists.
-            if (!$manager->tenant_exists($tenantid)) {
+            $tenantlib = new TenantLib();
+
+            if (!$tenantlib->tenant_exists($tenantid)) {
                 $router->redirect(
                     new moodle_url('/'),
                     get_string('tenantidinvaliderror', 'local_registration'),
@@ -234,7 +240,7 @@ class registration extends \moodleform {
         $this->set_data(['country' => $country]);
 
         // Gender.
-        $genders = $manager->get_profile_field_options('gender') ?? [];
+        $genders = $userlib->get_profile_field_options('gender') ?? [];
         $genders = ['' => get_string('select', 'local_registration')] + $genders;
         $mform->addElement('select', 'gender', get_string('gender', 'local_registration'), $genders);
         $mform->addRule('gender', get_string('genderempty', 'local_registration'), 'required', null, 'client');
@@ -260,7 +266,7 @@ class registration extends \moodleform {
         $this->set_data(['position' => $position]);
 
         // Domain.
-        $domains = $manager->get_profile_field_options('domain') ?? [];
+        $domains = $userlib->get_profile_field_options('domain') ?? [];
         $domains = ['' => get_string('select', 'local_registration')] + $domains;
         $mform->addElement('select', 'domain', get_string('domain', 'local_registration'), $domains);
         $mform->addRule('domain', get_string('domainempty', 'local_registration'), 'required', null, 'client');
@@ -289,7 +295,7 @@ class registration extends \moodleform {
         $this->set_data(['comments' => $comments]);
 
         // Fields of interest.
-        $interestsoptions = $manager->get_profile_field_options('interests') ?? [];
+        $interestsoptions = $userlib->get_profile_field_options('interests') ?? [];
         $interestsoptions = ['' => get_string('select', 'local_registration')] + $interestsoptions;
         $selectinterests = $mform->addElement(
             'select',
@@ -308,7 +314,8 @@ class registration extends \moodleform {
         }
 
         // Policies.
-        $policieshtml = $manager->format_policies($manager->get_policies());
+        $policieslib = new PoliciesLib();
+        $policieshtml = $policieslib->format_policies($policieslib->get_policies());
 
         $mform->addElement(
             'checkbox',
@@ -341,8 +348,7 @@ class registration extends \moodleform {
     public function validation($data, $files) {
         global $SESSION;
 
-        $manager = new manager();
-
+        $model = new FormModel();
         $errors = parent::validation($data, $files);
 
         if (\core_text::strlen($data['firstname']) > self::FIELD_MAX_LENGTH) {
@@ -364,7 +370,7 @@ class registration extends \moodleform {
         }
 
         $recordbyid = !empty($SESSION->local_registration['id']) ?
-            $manager->get_registration_record($SESSION->local_registration['id']) :
+            $model->get_registration_record($SESSION->local_registration['id']) :
             0;
 
         if (!$recordbyid || ($recordbyid && $recordbyid->email !== $data['email'])) {
@@ -377,18 +383,18 @@ class registration extends \moodleform {
 
             // Check that email is unique in 'local_registration'.
             if (empty($errors['email'])) {
-                $record = $manager->get_registration_record(null, $data['email']);
+                $record = $model->get_registration_record(null, $data['email']);
 
                 if (!empty($record)) {
                     $approved = $record->approved;
 
                     switch ($approved) {
-                        case manager::REGISTRATION_NOTIFIED:
-                        case manager::REGISTRATION_PENDING:
-                        case manager::REGISTRATION_APPROVED:
+                        case FormModel::REGISTRATION_NOTIFIED:
+                        case FormModel::REGISTRATION_PENDING:
+                        case FormModel::REGISTRATION_APPROVED:
                             $errors['email'] = get_string('erroremailexists', 'local_registration');
                             break;
-                        case manager::REGISTRATION_REJECTED:
+                        case FormModel::REGISTRATION_REJECTED:
                             $errors['email'] = get_string('erroremailrejected', 'local_registration');
                             break;
                         default:

@@ -26,7 +26,9 @@ namespace local_registration\form;
 
 use core_form\dynamic_form;
 use tool_tenant\manager as tenantmanager;
-use local_registration\manager;
+use local_registration\model\Form as FormModel;
+use local_registration\lib\User as UserLib;
+use DateTime;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -121,21 +123,22 @@ class approve_form extends dynamic_form {
             $id = (int) $data->id;
 
             // Get registration record.
-            $manager = new manager();
-            $record = $manager->get_registration_record($id);
+            $model = new FormModel();
+            $userlib = new UserLib();
+            $record = $model->get_registration_record($id);
 
             // Create user.
-            $userid = $manager->create_user($record);
+            $userid = $userlib->create_user($record);
 
             // Approve registration record.
-            $manager->update_registration_record($record, 'approved', manager::REGISTRATION_APPROVED);
+            $model->update_registration_record($record, 'approved', FormModel::REGISTRATION_APPROVED);
 
             // Update assessor id.
-            $manager->update_registration_record($record, 'assessor', $USER->id);
+            $model->update_registration_record($record, 'assessor', $USER->id);
 
             // Update timemodified.
-            $time = new \DateTime('now');
-            $manager->update_registration_record($record, 'timemodified', $time->getTimestamp());
+            $time = new DateTime('now');
+            $model->update_registration_record($record, 'timemodified', $time->getTimestamp());
 
             // Add user to tenant.
             $tenantmanager = new tenantmanager();

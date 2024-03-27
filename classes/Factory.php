@@ -28,6 +28,7 @@
 namespace local_registration;
 
 use local_registration\model\Base as BaseModel;
+use Exception;
 
 /**
  * Class factory.
@@ -60,7 +61,7 @@ class Factory {
      * @param string $type The type or class name within the specified namespace.
      *
      * @return mixed An instance of the specified class.
-     * @throws \Exception If the specified class does not exist.
+     * @throws Exception If the specified class does not exist.
      */
     public function create_instance(string $type) {
         $class = "\\$this->namespace\\$type";
@@ -68,7 +69,7 @@ class Factory {
         if (class_exists($class)) {
             return new $class();
         } else {
-            throw new \Exception("Class $class not found.");
+            throw new Exception("Class $class not found.");
         }
     }
 
@@ -79,7 +80,7 @@ class Factory {
      * @param array $config Optional configuration array for the model.
      *
      * @return BaseModel The model object.
-     * @throws  \Exception
+     * @throws Exception
      */
     public function create_model($name, array $config = []) {
         // Clean the parameters.
@@ -90,7 +91,7 @@ class Factory {
         if (class_exists($class)) {
             $model = new $class($config);
         } else {
-            throw new \Exception("Class $class not found.");
+            throw new Exception("Class $class not found.");
         }
 
         return $model;

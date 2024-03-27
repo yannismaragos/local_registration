@@ -19,6 +19,7 @@ namespace local_registration\controller;
 use moodle_url;
 use local_registration\Factory;
 use local_registration\model\Base as BaseModel;
+use Exception;
 
 /**
  * Base controller class.
@@ -77,7 +78,7 @@ abstract class Base {
         }
 
         if (!array_key_exists('namespace', $config)) {
-            throw new \Exception(get_string('errorcontrollernamespace', $this->namespace));
+            throw new Exception(get_string('errorcontrollernamespace', $this->namespace));
         }
 
         $this->factory = $factory ?? new Factory($config['namespace']);
@@ -108,7 +109,7 @@ abstract class Base {
      * by passing a $config['name'] in the class constructor.
      *
      * @return string The name of the controller.
-     * @throws \Exception
+     * @throws Exception
      */
     public function get_name() {
         if (empty($this->name)) {
@@ -116,13 +117,13 @@ abstract class Base {
             $lastslashposition = strrpos($class, '\\');
 
             if ($lastslashposition === false) {
-                throw new \Exception(get_string('errorcontrollergetname', $this->namespace, $class));
+                throw new Exception(get_string('errorcontrollergetname', $this->namespace, $class));
             }
 
             $this->name = substr($class, $lastslashposition + 1);
 
             if (empty($this->name)) {
-                throw new \Exception(get_string('errorcontrollergetname', $this->namespace, $class));
+                throw new Exception(get_string('errorcontrollergetname', $this->namespace, $class));
             }
         }
 
@@ -135,7 +136,7 @@ abstract class Base {
      * @param string $name The model name. Optional.
      * @param array $config Configuration array for model. Optional.
      *
-     * @return BaseModel|boolean Model object on success; otherwise false on failure.
+     * @return BaseModel|bool Model object on success; otherwise false on failure.
      */
     public function get_model($name = '', $config = []) {
         if (empty($name)) {

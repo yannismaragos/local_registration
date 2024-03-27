@@ -24,9 +24,12 @@
 
 namespace local_registration\form;
 
+use moodle_url;
 use core_form\dynamic_form;
-use local_registration\manager;
+use local_registration\model\Form as FormModel;
+use local_registration\lib\Notification as NotificationLib;
 use local_registration\helper\Encryptor;
+use DateTime;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -54,12 +57,12 @@ class notify_form extends dynamic_form {
      * Returns url to set in $PAGE->set_url() when form is being rendered or
      * submitted via AJAX.
      *
-     * @return \moodle_url
+     * @return moodle_url
      */
-    protected function get_page_url_for_dynamic_submission(): \moodle_url {
+    protected function get_page_url_for_dynamic_submission(): moodle_url {
         $params = [];
 
-        return new \moodle_url('/local/registration', $params);
+        return new moodle_url('/local/registration', $params);
     }
 
     /**
@@ -127,26 +130,27 @@ class notify_form extends dynamic_form {
             $reason = $data->reason;
 
             // Get registration record.
-            $manager = new manager();
-            $record = $manager->get_registration_record($id);
+            $model = new FormModel();
+            $notificationlib = new NotificationLib();
+            $record = $model->get_registration_record($id);
 
             // Notify registration record.
-            $manager->update_registration_record($record, 'approved', manager::REGISTRATION_NOTIFIED);
+            $model->update_registration_record($record, 'approved', FormModel::REGISTRATION_NOTIFIED);
 
             // Update assessor id.
-            $manager->update_registration_record($record, 'assessor', $USER->id);
+            $model->update_registration_record($record, 'assessor', $USER->id);
 
             // Update timemodified.
-            $time = new \DateTime('now');
-            $manager->update_registration_record($record, 'timemodified', $time->getTimestamp());
+            $time = new DateTime('now');
+            $model->update_registration_record($record, 'timemodified', $time->getTimestamp());
 
             // Construct url for editing registration record.
             $encryptor = new Encryptor(Encryptor::ENCRYPTION_KEY);
             $hash = $encryptor->encrypt($record->email);
-            $url = new \moodle_url('/local/registration/form.php?id=' . $id . '&hash=' . urlencode($hash));
+            $url = new moodle_url('/local/registration/form.php?id=' . $id . '&hash=' . urlencode($hash));
 
             // Send email notification to user.
-            $manager->send_email_for_edit($record, $reason, $url);
+            $notificationlib->send_email_for_edit($record, $reason, $url);
         }
     }
 }

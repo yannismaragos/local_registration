@@ -29,7 +29,7 @@ use context_system;
 use core_privacy\local\metadata\collection;
 use core_privacy\local\request\contextlist;
 use core_privacy\local\request\approved_contextlist;
-use \core_privacy\local\request\writer;
+use core_privacy\local\request\writer;
 
 /**
  * Privacy Subsystem implementation for local_registration.

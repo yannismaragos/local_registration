@@ -20,9 +20,10 @@ use moodleform;
 use moodle_url;
 use local_registration\controller\Base;
 use local_registration\form\registration;
-use local_registration\manager;
+use local_registration\model\Form as FormModel;
 use local_registration\helper\Encryptor;
 use local_registration\helper\Router;
+use local_registration\lib\Notification as NotificationLib;
 use stdClass;
 use DateTime;
 use html_writer;
@@ -46,7 +47,12 @@ class Form extends Base {
     protected $router;
 
     /**
-     * Class contructor.
+     * @var FormModel The Form model object.
+     */
+    protected $model;
+
+    /**
+     * Class constructor.
      *
      * @param array $config An associative array of configuration settings. Optional.
      * @param Factory $factory The factory. Optional.
@@ -58,6 +64,7 @@ class Form extends Base {
         $tenantid = optional_param('tenantid', null, PARAM_INT);
         $this->url = new moodle_url('/local/registration/index.php?view=form&tenantid=' . $tenantid);
         $this->pagelayout = 'standard';
+        $this->model = $this->get_model();
     }
 
     /**
@@ -128,8 +135,8 @@ class Form extends Base {
     private function submit_form_via_task(): void {
         global $SESSION, $OUTPUT, $PAGE, $CFG;
 
-        $manager = new manager();
         $encryptor = new Encryptor(Encryptor::ENCRYPTION_KEY);
+        $notificationlib = new NotificationLib();
 
         // Check for empty session variable.
         if (empty($SESSION->local_registration)) {
@@ -163,16 +170,16 @@ class Form extends Base {
             $record->timemodified = $time->getTimestamp();
             $record->approved = 0;
 
-            $manager->update_registration_record($record);
+            $this->model->update_registration_record($record);
 
             // Notify tenant admins.
-            $manager->notify_tenants((int) $record->tenantid, manager::USER_UPDATE);
+            $notificationlib->notify_tenant_admins((int) $record->tenantid, 'update');
 
             // Record updated, display message to user.
             echo html_writer::tag('h3', get_string('thanks') . ", " . $record->firstname);
             echo html_writer::tag('p', text_to_html(get_string('registrationupdated', 'local_registration')));
         } else {
-            if (!$id = $manager->add_registration_record($SESSION->local_registration)) {
+            if (!$id = $this->model->add_registration_record($SESSION->local_registration)) {
                 $this->router->redirect(
                     new moodle_url('/'),
                     get_string('erroremailexists', 'local_registration'),
@@ -187,7 +194,7 @@ class Form extends Base {
 
             // Send confirmation email.
             $confirmurl = new moodle_url('/local/registration/index.php?view=confirm&id=' . $id . '&hash=' . urlencode($hash));
-            $manager->send_confirmation_email($SESSION->local_registration, $confirmurl);
+            $notificationlib->send_email_to_user($SESSION->local_registration, $confirmurl);
             $unconfirmedhours = get_config('local_registration', 'unconfirmedhours');
 
             // Confirmation email sent, display message to user.

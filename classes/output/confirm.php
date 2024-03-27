@@ -26,9 +26,11 @@ namespace local_registration\output;
 
 use renderer_base;
 use local_registration\model\Confirm as ConfirmModel;
+use local_registration\model\Form as FormModel;
 use local_registration\helper\Encryptor;
-use local_registration\manager;
 use tool_tenant\manager as tenantmanager;
+use local_registration\lib\User as UserLib;
+use local_registration\lib\Notification as NotificationLib;
 
 /**
  * Confirm output class.
@@ -71,18 +73,19 @@ class confirm implements \renderable, \templatable {
         $email = $encryptor->decrypt($hash);
 
         // Get record from 'local_registration'.
-        $manager = new manager();
-        $record = $manager->get_registration_record($id, $email);
+        $formmodel = new FormModel();
+        $userlib = new UserLib();
+        $record = $formmodel->get_registration_record($id, $email);
 
         // Conditions.
         $validhash = $record && $email === $record->email;
         $errorinvalidhash = text_to_html(get_string('errorinvalidhash', 'local_registration'));
         $recordconfirmed = $record && $record->confirmed;
         $emailalreadyconfirmed = text_to_html(get_string('emailalreadyconfirmed', 'local_registration'));
-        $recordexpired = $record && $manager->record_has_expired($record->timecreated);
+        $recordexpired = $record && $formmodel->record_has_expired($record->timecreated);
         $confirmrecord = false;
         $erroremailconfirm = text_to_html(get_string('erroremailconfirm', 'local_registration'));
-        $istrusteddomain = $record && $manager->is_trusted_domain($record->email);
+        $istrusteddomain = $record && $userlib->is_trusted_domain($record->email);
         $emailconfirmed = text_to_html(get_string('emailconfirmed', 'local_registration'));
         $userid = false;
         $emailconfirmedtrusted = text_to_html(get_string('emailconfirmedtrusted', 'local_registration'));
@@ -115,7 +118,8 @@ class confirm implements \renderable, \templatable {
             return $data;
         }
 
-        $confirmrecord = $manager->update_registration_record($record, 'confirmed', '1');
+        $formmodel = new FormModel();
+        $confirmrecord = $formmodel->update_registration_record($record, 'confirmed', '1');
         $data['confirmrecord'] = $confirmrecord;
 
         if (!$confirmrecord) {
@@ -123,17 +127,20 @@ class confirm implements \renderable, \templatable {
         }
 
         if ($istrusteddomain) {
-            if ($userid = $manager->create_user($record)) {
+            $userlib = new UserLib();
+            if ($userid = $userlib->create_user($record)) {
                 $data['userid'] = $userid;
-                $manager->update_registration_record($record, 'approved', manager::REGISTRATION_APPROVED);
-                $manager->update_registration_record($record, 'assessor', get_admin()->id);
+                $formmodel->update_registration_record($record, 'approved', FormModel::REGISTRATION_APPROVED);
+                $formmodel->update_registration_record($record, 'assessor', get_admin()->id);
                 $tenantmanager = new tenantmanager();
                 $tenantmanager->allocate_user($userid, (int) $record->tenantid, 'local_registration', 'new_user');
                 $loginbutton = $OUTPUT->single_button("$CFG->wwwroot/login", get_string('login'));
                 $data['loginbutton'] = $loginbutton;
             }
         }
-        $manager->notify_tenants((int) $record->tenantid, manager::USER_CONFIRMATION);
+
+        $notificationlib = new NotificationLib();
+        $notificationlib->notify_tenant_admins((int) $record->tenantid, 'confirm');
 
         return $data;
     }

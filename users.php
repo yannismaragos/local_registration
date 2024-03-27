@@ -22,7 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use tool_tenant\manager;
 use tool_tenant\tenancy;
 use core\notification;
 use local_registration\output\users;
@@ -35,7 +34,7 @@ $PAGE->set_url(new moodle_url('/local/registration/users.php'));
 $PAGE->set_context(\core\context\system::instance());
 
 // Access control.
-$istenantadmin = manager::is_tenant_admin(tenancy::get_tenant_id(), $USER->id);
+$istenantadmin = \tool_tenant\manager::is_tenant_admin(tenancy::get_tenant_id(), $USER->id);
 
 if (
     !is_siteadmin() && !$istenantadmin

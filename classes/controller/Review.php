@@ -34,7 +34,7 @@ class Review extends Base {
     protected $router;
 
     /**
-     * Class contructor.
+     * Class constructor.
      *
      * @param array $config An associative array of configuration settings. Optional.
      * @param Factory $factory The factory. Optional.

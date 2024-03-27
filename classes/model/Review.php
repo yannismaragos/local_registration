@@ -40,7 +40,6 @@ class Review extends BaseModel {
      * @return array The formatted data array.
      */
     public function format_data(array $data): array {
-
         // Format fields.
         $tenantname = tenancy::get_tenant_name_from_id($data['tenantid']);
         $data['tenantid'] = $tenantname;

@@ -36,13 +36,13 @@ $task = optional_param('task', 'display', PARAM_ALPHAEXT);
 $controller = 'local_registration\\controller\\' . ucfirst($view);
 
 if (!class_exists($controller)) {
-    throw new moodle_exception('viewerror', 'local_registration', ucfirst($view));
+    throw new Exception('View ' . ucfirst($view) . ' not found.');
 }
 
 $instance = new $controller(['namespace' => 'local_registration']);
 
 if (!method_exists($instance, $task)) {
-    throw new moodle_exception('taskerror', 'local_registration', ucfirst($task));
+    throw new Exception('Task ' . ucfirst($task) . ' not found.');
 }
 
 $instance->$task();
