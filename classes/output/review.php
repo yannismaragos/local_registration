@@ -65,12 +65,9 @@ class review implements \renderable, \templatable {
         $sessiondata = $SESSION->local_registration;
 
         // Format data for display.
-        $formatteddata = $this->model->format_data($sessiondata);
-        $indexeddata = array_map(function ($key, $value) {
-            return ['key' => $key, 'value' => $value];
-        }, array_keys($formatteddata), $formatteddata);
-        $data = [];
+        $reviewdata = $this->model->format_data($sessiondata);
 
+        // Create buttons.
         $editurl = new moodle_url(
             '/local/registration/index.php',
             ['tenantid' => $SESSION->local_registration['tenantid']],
@@ -87,7 +84,8 @@ class review implements \renderable, \templatable {
             new single_button($submiturl, get_string('submit', 'local_registration'), 'post', single_button::BUTTON_PRIMARY)
         );
 
-        $data['reviewdata'] = $indexeddata;
+        $data = [];
+        $data['reviewdata'] = $reviewdata;
         $data['editbutton'] = $editbutton;
         $data['submitbutton'] = $submitbutton;
 

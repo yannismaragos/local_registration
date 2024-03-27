@@ -33,13 +33,11 @@ class Review extends BaseModel {
      *
      * It includes the retrieval of tenant information, converts interests
      * into a comma-separated string, converts country codes to names,
-     * reindexes the array with predefined labels, and removes the 'policies'
-     * field.
+     * reindexes the array, and removes the 'policies' field.
      *
      * @param array $data The input data array to be formatted.
      *
-     * @return array The formatted data array with keys reindexed according to
-     *               predefined labels.
+     * @return array The formatted data array.
      */
     public function format_data(array $data): array {
 
@@ -73,6 +71,10 @@ class Review extends BaseModel {
         unset($data['hash']);
         unset($data['policies']);
 
-        return $data;
+        $formatted = array_map(function ($key, $value) {
+            return ['key' => $key, 'value' => $value];
+        }, array_keys($data), $data);
+
+        return $formatted;
     }
 }
