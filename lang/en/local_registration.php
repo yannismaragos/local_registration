@@ -95,9 +95,11 @@ $string['submit'] = 'Submit';
 
 // Review page.
 $string['reviewdatatitle'] = 'Review registration data';
+$string['reviewdatadescription'] = 'Review registration data description text.';
 
 // Confirm page.
 $string['confirmtitle'] = 'Email confirmation';
+$string['confirmdescription'] = 'Email confirmation description text.';
 $string['emailconfirmed'] = 'Your registration has been confirmed. Please await approval from your manager before accessing the platform.';
 $string['emailconfirmedtrusted'] = 'Your registration is now confirmed, and your user account has been successfully created. ' .
     'An email has been sent to your address, confirming the registration and providing a temporary password. ' .

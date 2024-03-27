@@ -70,6 +70,6 @@ class Review extends Base {
      * @return string|null The description of the page, or null if no description is available.
      */
     protected function get_description(): ?string {
-        return '';
+        return get_string('reviewdatadescription', 'local_registration');
     }
 }
