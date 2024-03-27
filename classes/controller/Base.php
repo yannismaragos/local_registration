@@ -30,6 +30,11 @@ use local_registration\model\Base as BaseModel;
  */
 abstract class Base {
     /**
+     * @var string The plugin namespace.
+     */
+    protected $namespace;
+
+    /**
      * @var string The name of the controller.
      */
     protected $name;
@@ -61,7 +66,8 @@ abstract class Base {
      * @param Factory $factory The factory. Optional.
      */
     public function __construct($config = [], Factory $factory = null) {
-        // Set the view name.
+        $this->namespace = $config['namespace'];
+
         if (empty($this->name)) {
             if (array_key_exists('name', $config)) {
                 $this->name = $config['name'];
@@ -71,7 +77,7 @@ abstract class Base {
         }
 
         if (!array_key_exists('namespace', $config)) {
-            throw new \Exception(get_string('errorcontrollernamespace', 'local_registration'));
+            throw new \Exception(get_string('errorcontrollernamespace', $this->namespace));
         }
 
         $this->factory = $factory ?? new Factory($config['namespace']);
@@ -83,7 +89,7 @@ abstract class Base {
      * @return string The title of the page.
      */
     protected function get_title(): string {
-        return get_string('pluginname', 'local_registration');
+        return get_string('pluginname', $this->namespace);
     }
 
     /**
@@ -92,7 +98,7 @@ abstract class Base {
      * @return string|null The description of the page, or null if no description is available.
      */
     protected function get_description(): ?string {
-        return get_string('plugindescription', 'local_registration');
+        return get_string('plugindescription', $this->namespace);
     }
 
     /**
@@ -110,13 +116,13 @@ abstract class Base {
             $lastslashposition = strrpos($class, '\\');
 
             if ($lastslashposition === false) {
-                throw new \Exception(get_string('errorcontrollergetname', 'local_registration', $class));
+                throw new \Exception(get_string('errorcontrollergetname', $this->namespace, $class));
             }
 
             $this->name = substr($class, $lastslashposition + 1);
 
             if (empty($this->name)) {
-                throw new \Exception(get_string('errorcontrollergetname', 'local_registration', $class));
+                throw new \Exception(get_string('errorcontrollergetname', $this->namespace, $class));
             }
         }
 
@@ -187,14 +193,17 @@ abstract class Base {
     }
 
     /**
-     * Abstract method for displaying the content of the page.
-     *
-     * This method is responsible for rendering the main content of the page.
-     * It should be implemented by concrete subclasses to provide specific content.
+     * Renders the main content of the page.
      *
      * @return void
      */
-    abstract protected function display_content(): void;
+    protected function display_content(): void {
+        global $PAGE;
+        $output = $PAGE->get_renderer($this->namespace);
+        $outputclass = $this->namespace . '\output\\' . strtolower($this->name);
+        $outputpage = new $outputclass($this->get_model());
+        echo $output->render($outputpage);
+    }
 
     /**
      * Displays the footer content using the global OUTPUT object.
@@ -207,7 +216,6 @@ abstract class Base {
      */
     protected function display_footer(): void {
         global $OUTPUT;
-
         echo $OUTPUT->footer();
     }
 }

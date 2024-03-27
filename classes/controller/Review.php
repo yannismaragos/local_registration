@@ -19,7 +19,6 @@ namespace local_registration\controller;
 use moodle_url;
 use local_registration\controller\Base;
 use local_registration\helper\Router;
-use local_registration\output\review as ReviewOutput;
 
 /**
  * Review controller class.
@@ -72,21 +71,5 @@ class Review extends Base {
      */
     protected function get_description(): ?string {
         return '';
-    }
-
-    /**
-     * Displays the main content of the page.
-     *
-     * This method is responsible for rendering the main content of the page.
-     *
-     * @return void
-     */
-    protected function display_content(): void {
-        global $PAGE;
-
-        // Render template.
-        $output = $PAGE->get_renderer('local_registration');
-        $outputpage = new ReviewOutput($this->get_model());
-        echo $output->render($outputpage);
     }
 }
