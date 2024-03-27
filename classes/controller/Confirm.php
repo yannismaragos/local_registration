@@ -19,10 +19,6 @@ namespace local_registration\controller;
 use moodle_url;
 use local_registration\controller\Base;
 use local_registration\helper\Router;
-use local_registration\helper\Encryptor;
-use local_registration\manager;
-use tool_tenant\manager as tenantmanager;
-use html_writer;
 
 /**
  * Confirm controller class.
@@ -66,75 +62,6 @@ class Confirm extends Base {
      * @return string|null The description of the page, or null if no description is available.
      */
     protected function get_description(): ?string {
-        return get_string('reviewdatadescription', 'local_registration');
-    }
-
-    /**
-     * Displays the main content of the page.
-     *
-     * This method is responsible for rendering the main content of the page.
-     *
-     * @return void
-     */
-    protected function display_content(): void {
-        global $CFG, $OUTPUT;
-
-        // Check for url params (id, hash).
-        $id = required_param('id', PARAM_INT);
-        $hash = required_param('hash', PARAM_RAW);
-
-        // Decrypt the hash.
-        $encryptor = new Encryptor(manager::ENCRYPTION_KEY);
-        $email = $encryptor->decrypt($hash);
-
-        // Get record from 'local_registration'.
-        $manager = new manager();
-        $record = $manager->get_registration_record($id, $email);
-
-        echo $OUTPUT->box_start('generalbox');
-
-        // Check for valid record and valid hash.
-        if (!$record || $email !== $record->email) {
-            echo html_writer::tag('p', text_to_html(get_string('errorinvalidhash', 'local_registration')));
-        } else {
-            // Check whether record is already confirmed.
-            if ($record->confirmed) {
-                echo html_writer::tag('p', text_to_html(get_string('emailalreadyconfirmed', 'local_registration')));
-            } else {
-                // Check for record expiration.
-                if ($manager->record_has_expired($record->timecreated)) {
-                    echo html_writer::tag('p', text_to_html(get_string('errorinvalidhash', 'local_registration')));
-                } else {
-                    // Confirm registration record.
-                    if ($manager->update_registration_record($record, 'confirmed', '1')) {
-                        if ($manager->is_trusted_domain($record->email)) {
-                            // Create user.
-                            if ($userid = $manager->create_user($record)) {
-                                // Approve registration record.
-                                $manager->update_registration_record($record, 'approved', manager::REGISTRATION_APPROVED);
-
-                                // Update assessor id.
-                                $manager->update_registration_record($record, 'assessor', get_admin()->id);
-
-                                // Add user to tenant.
-                                $tenantmanager = new tenantmanager();
-                                $tenantmanager->allocate_user($userid, (int) $record->tenantid, 'local_registration', 'new_user');
-
-                                echo html_writer::tag('p', text_to_html(get_string('emailconfirmedtrusted', 'local_registration')));
-                                echo $OUTPUT->single_button("$CFG->wwwroot/login", get_string('login'));
-                            }
-                        } else {
-                            echo html_writer::tag('p', text_to_html(get_string('emailconfirmed', 'local_registration')));
-                        }
-
-                        $manager->notify_tenants((int) $record->tenantid, manager::USER_CONFIRMATION);
-                    } else {
-                        echo html_writer::tag('p', text_to_html(get_string('erroremailconfirm', 'local_registration')));
-                    }
-                }
-            }
-        }
-
-        echo $OUTPUT->box_end();
+        return get_string('confirmdescription', 'local_registration');
     }
 }

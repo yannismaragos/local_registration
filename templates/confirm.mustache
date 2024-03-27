@@ -19,3 +19,35 @@
 
     Page for registration confirmation.
 }}
+
+<div class="box py-3 generalbox">
+    {{^validhash}}
+        <p>{{{errorinvalidhash}}}</p>
+    {{/validhash}}
+    {{#validhash}}
+        {{#recordconfirmed}}
+            <p>{{{emailalreadyconfirmed}}}</p>
+        {{/recordconfirmed}}
+        {{^recordconfirmed}}
+            {{#recordexpired}}
+                <p>{{{errorinvalidhash}}}</p>
+            {{/recordexpired}}
+            {{^recordexpired}}
+                {{#confirmrecord}}
+                    {{#istrusteddomain}}
+                        {{#userid}}
+                            <p>{{{emailconfirmedtrusted}}}</p>
+                            {{{loginbutton}}}
+                        {{/userid}}
+                    {{/istrusteddomain}}
+                    {{^istrusteddomain}}
+                        {{{emailconfirmed}}}
+                    {{/istrusteddomain}}
+                {{/confirmrecord}}
+                {{^confirmrecord}}
+                    <p>{{{erroremailconfirm}}}</p>
+                {{/confirmrecord}}
+            {{/recordexpired}}
+        {{/recordconfirmed}}
+    {{/validhash}}
+</div>
