@@ -141,7 +141,7 @@ class notify_form extends dynamic_form {
             $manager->update_registration_record($record, 'timemodified', $time->getTimestamp());
 
             // Construct url for editing registration record.
-            $encryptor = new Encryptor(manager::ENCRYPTION_KEY);
+            $encryptor = new Encryptor(Encryptor::ENCRYPTION_KEY);
             $hash = $encryptor->encrypt($record->email);
             $url = new \moodle_url('/local/registration/form.php?id=' . $id . '&hash=' . urlencode($hash));
 

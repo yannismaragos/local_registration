@@ -129,7 +129,7 @@ class Form extends Base {
         global $SESSION, $OUTPUT, $PAGE, $CFG;
 
         $manager = new manager();
-        $encryptor = new Encryptor(manager::ENCRYPTION_KEY);
+        $encryptor = new Encryptor(Encryptor::ENCRYPTION_KEY);
 
         // Check for empty session variable.
         if (empty($SESSION->local_registration)) {
@@ -143,7 +143,6 @@ class Form extends Base {
 
         $this->display_header();
 
-        // Start box.
         echo $OUTPUT->box_start('generalbox boxwidthnormal');
 
         // Submit data to 'local_registration' table.
@@ -170,8 +169,8 @@ class Form extends Base {
             $manager->notify_tenants((int) $record->tenantid, manager::USER_UPDATE);
 
             // Record updated, display message to user.
-            echo html_writer::tag('h3',  get_string('thanks') . ", " . $record->firstname);
-            echo html_writer::tag('p',  text_to_html(get_string('registrationupdated', 'local_registration')));
+            echo html_writer::tag('h3', get_string('thanks') . ", " . $record->firstname);
+            echo html_writer::tag('p', text_to_html(get_string('registrationupdated', 'local_registration')));
         } else {
             if (!$id = $manager->add_registration_record($SESSION->local_registration)) {
                 $this->router->redirect(
@@ -195,13 +194,11 @@ class Form extends Base {
             $PAGE->set_title(get_string('confirmationemailsent', 'local_registration'));
             $PAGE->set_heading(get_string('confirmationemailsent', 'local_registration'));
 
-            echo html_writer::tag('h3',  get_string('thanks') . ", " . $SESSION->local_registration['firstname']);
-            echo html_writer::tag('p',  text_to_html(get_string('registrationstarted', 'local_registration', $unconfirmedhours)));
+            echo html_writer::tag('h3', get_string('thanks') . ", " . $SESSION->local_registration['firstname']);
+            echo html_writer::tag('p', text_to_html(get_string('registrationstarted', 'local_registration', $unconfirmedhours)));
         }
 
         echo $OUTPUT->single_button("$CFG->wwwroot/", get_string('continue'));
-
-        // End box.
         echo $OUTPUT->box_end();
 
         $this->display_footer();

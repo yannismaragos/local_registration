@@ -72,13 +72,6 @@ class manager {
     public const REGISTRATION_NOTIFIED = -2;
 
     /**
-     * Encryption key.
-     *
-     * @var string
-     */
-    public const ENCRYPTION_KEY = "8r26kHwddGS13f*jfFRT6dfiglKd9UsG";
-
-    /**
      * Value for user confirmation notification type.
      *
      * @var int

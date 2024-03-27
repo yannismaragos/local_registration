@@ -60,7 +60,7 @@ class registration extends \moodleform {
         $hash = '';
         $tenantid = 0;
         $manager = new manager();
-        $encryptor = new Encryptor(manager::ENCRYPTION_KEY);
+        $encryptor = new Encryptor(Encryptor::ENCRYPTION_KEY);
         $router = new Router();
 
         // Instantiate the form.

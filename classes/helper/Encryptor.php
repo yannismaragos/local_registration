@@ -57,6 +57,22 @@ class Encryptor {
     private static $bytes = 32;
 
     /**
+     * Encryption key.
+     *
+     * The encryption key should ideally not be kept in this class, especially
+     * if it's a constant. Hardcoding sensitive information like encryption keys
+     * in your code is generally a bad practice because it can lead to security
+     * vulnerabilities if your code is ever exposed or version controlled publicly.
+     * A better approach would be to store the encryption key in a secure and
+     * separate configuration file or environment variable, which is then accessed
+     * by the Encryptor class when needed. This way, the key is not directly in
+     * your code and can be changed easily without modifying the code itself.
+     *
+     * @var string
+     */
+    public const ENCRYPTION_KEY = "8r26kHwddGS13f*jfFRT6dfiglKd9UsG";
+
+    /**
      * Encryptor constructor.
      *
      * Constructor to initialize the Encryptor object with the encryption key.

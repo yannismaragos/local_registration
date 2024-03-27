@@ -67,7 +67,7 @@ class confirm implements \renderable, \templatable {
         $hash = required_param('hash', PARAM_RAW);
 
         // Decrypt the hash.
-        $encryptor = new Encryptor(manager::ENCRYPTION_KEY);
+        $encryptor = new Encryptor(Encryptor::ENCRYPTION_KEY);
         $email = $encryptor->decrypt($hash);
 
         // Get record from 'local_registration'.
