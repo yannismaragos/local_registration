@@ -42,7 +42,7 @@ class Confirm extends Base {
     public function __construct($config = []) {
         parent::__construct($config);
         $this->context = 'system';
-        $this->url = new moodle_url('/local/registration/confirm.php');
+        $this->url = new moodle_url('/local/registration/index.php?view=confirm');
         $this->pagelayout = 'standard';
         $this->router = new Router();
     }
