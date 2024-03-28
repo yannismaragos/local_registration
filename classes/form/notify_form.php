@@ -26,6 +26,7 @@ namespace local_registration\form;
 
 use moodle_url;
 use core_form\dynamic_form;
+use local_registration\Factory;
 use local_registration\model\Form as FormModel;
 use local_registration\lib\Notification as NotificationLib;
 use local_registration\helper\Encryptor;
@@ -130,19 +131,20 @@ class notify_form extends dynamic_form {
             $reason = $data->reason;
 
             // Get registration record.
-            $model = new FormModel();
+            $factory = new Factory('local_registration');
+            $formmodel = $factory->create_model('Form');
             $notificationlib = new NotificationLib();
-            $record = $model->get_registration_record($id);
+            $record = $formmodel->get_registration_record($id);
 
             // Notify registration record.
-            $model->update_registration_record($record, 'approved', FormModel::REGISTRATION_NOTIFIED);
+            $formmodel->update_registration_record($record, 'approved', FormModel::REGISTRATION_NOTIFIED);
 
             // Update assessor id.
-            $model->update_registration_record($record, 'assessor', $USER->id);
+            $formmodel->update_registration_record($record, 'assessor', $USER->id);
 
             // Update timemodified.
             $time = new DateTime('now');
-            $model->update_registration_record($record, 'timemodified', $time->getTimestamp());
+            $formmodel->update_registration_record($record, 'timemodified', $time->getTimestamp());
 
             // Construct url for editing registration record.
             $encryptor = new Encryptor(Encryptor::ENCRYPTION_KEY);

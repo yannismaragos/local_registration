@@ -25,6 +25,7 @@
 namespace local_registration\output;
 
 use renderer_base;
+use local_registration\Factory;
 use local_registration\model\Confirm as ConfirmModel;
 use local_registration\model\Form as FormModel;
 use local_registration\helper\Encryptor;
@@ -73,7 +74,8 @@ class confirm implements \renderable, \templatable {
         $email = $encryptor->decrypt($hash);
 
         // Get record from 'local_registration'.
-        $formmodel = new FormModel();
+        $factory = new Factory('local_registration');
+        $formmodel = $factory->create_model('Form');
         $userlib = new UserLib();
         $record = $formmodel->get_registration_record($id, $email);
 
@@ -118,7 +120,6 @@ class confirm implements \renderable, \templatable {
             return $data;
         }
 
-        $formmodel = new FormModel();
         $confirmrecord = $formmodel->update_registration_record($record, 'confirmed', '1');
         $data['confirmrecord'] = $confirmrecord;
 

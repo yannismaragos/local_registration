@@ -26,6 +26,7 @@ namespace local_registration\form;
 
 use core_form\dynamic_form;
 use tool_tenant\manager as tenantmanager;
+use local_registration\Factory;
 use local_registration\model\Form as FormModel;
 use local_registration\lib\User as UserLib;
 use DateTime;
@@ -123,22 +124,23 @@ class approve_form extends dynamic_form {
             $id = (int) $data->id;
 
             // Get registration record.
-            $model = new FormModel();
+            $factory = new Factory('local_registration');
+            $formmodel = $factory->create_model('Form');
             $userlib = new UserLib();
-            $record = $model->get_registration_record($id);
+            $record = $formmodel->get_registration_record($id);
 
             // Create user.
             $userid = $userlib->create_user($record);
 
             // Approve registration record.
-            $model->update_registration_record($record, 'approved', FormModel::REGISTRATION_APPROVED);
+            $formmodel->update_registration_record($record, 'approved', FormModel::REGISTRATION_APPROVED);
 
             // Update assessor id.
-            $model->update_registration_record($record, 'assessor', $USER->id);
+            $formmodel->update_registration_record($record, 'assessor', $USER->id);
 
             // Update timemodified.
             $time = new DateTime('now');
-            $model->update_registration_record($record, 'timemodified', $time->getTimestamp());
+            $formmodel->update_registration_record($record, 'timemodified', $time->getTimestamp());
 
             // Add user to tenant.
             $tenantmanager = new tenantmanager();

@@ -27,6 +27,7 @@ namespace local_registration\form;
 defined('MOODLE_INTERNAL') || die();
 
 use moodle_url;
+use local_registration\Factory;
 use local_registration\model\Form as FormModel;
 use local_registration\helper\Encryptor;
 use local_registration\helper\Router;
@@ -62,7 +63,8 @@ class registration extends \moodleform {
         $id = 0;
         $hash = '';
         $tenantid = 0;
-        $model = new FormModel();
+        $factory = new Factory('local_registration');
+        $formmodel = $factory->create_model('Form');
         $encryptor = new Encryptor(Encryptor::ENCRYPTION_KEY);
         $router = new Router();
         $userlib = new UserLib();
@@ -72,7 +74,7 @@ class registration extends \moodleform {
 
         // Get the record id from the url.
         if ($id = optional_param('id', 0, PARAM_INT)) {
-            $record = $model->get_registration_record($id);
+            $record = $formmodel->get_registration_record($id);
 
             if (empty($record)) {
                 $router->redirect(
@@ -348,7 +350,8 @@ class registration extends \moodleform {
     public function validation($data, $files) {
         global $SESSION;
 
-        $model = new FormModel();
+        $factory = new Factory('local_registration');
+        $formmodel = $factory->create_model('Form');
         $errors = parent::validation($data, $files);
 
         if (\core_text::strlen($data['firstname']) > self::FIELD_MAX_LENGTH) {
@@ -370,7 +373,7 @@ class registration extends \moodleform {
         }
 
         $recordbyid = !empty($SESSION->local_registration['id']) ?
-            $model->get_registration_record($SESSION->local_registration['id']) :
+            $formmodel->get_registration_record($SESSION->local_registration['id']) :
             0;
 
         if (!$recordbyid || ($recordbyid && $recordbyid->email !== $data['email'])) {
@@ -383,7 +386,7 @@ class registration extends \moodleform {
 
             // Check that email is unique in 'local_registration'.
             if (empty($errors['email'])) {
-                $record = $model->get_registration_record(null, $data['email']);
+                $record = $formmodel->get_registration_record(null, $data['email']);
 
                 if (!empty($record)) {
                     $approved = $record->approved;

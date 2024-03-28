@@ -25,7 +25,7 @@
 namespace local_registration\task;
 
 use core\task\scheduled_task;
-use local_registration\model\Form as FormModel;
+use local_registration\Factory;
 
 /**
  * Scheduled task class for expiration control of registration records.
@@ -49,7 +49,8 @@ class expiration_control extends scheduled_task {
      * @return void
      */
     public function execute(): void {
-        $model = new FormModel();
-        $model->delete_expired_records();
+        $factory = new Factory('local_registration');
+        $formmodel = $factory->create_model('Form');
+        $formmodel->delete_expired_records();
     }
 }
