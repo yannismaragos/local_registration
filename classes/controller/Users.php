@@ -39,7 +39,7 @@ class Users extends Base {
         parent::__construct($config);
         $this->context = 'system';
         $this->url = new moodle_url('/local/registration/index.php?view=users');
-        $this->pagelayout = 'standard';
+        $this->pagelayout = 'admin';
     }
 
     /**
