@@ -36,7 +36,7 @@ function local_registration_theme_workplace_menu_items(): array {
 
     if (is_siteadmin() || \tool_tenant\manager::is_tenant_admin($tenantid, $USER->id)) {
         $menuitems[] = [
-            'url' => new moodle_url("/local/registration/users.php"),
+            'url' => new moodle_url("/local/registration/index.php?view=users"),
             'name' => get_string('workplacemenuitemtitle', 'local_registration'),
             'imageurl' => $OUTPUT->image_url('usermanagement', 'tool_tenant')->out(false),
             'isglobal' => $isglobal,
