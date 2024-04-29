@@ -39,7 +39,11 @@ use local_datatables\ssp\dtquerybuilder;
  */
 class querybuilder extends dtquerybuilder {
     /**
-     * Build a SELECT query for fetching lr and tenantname data
+     * Builds the SELECT query for retrieving data from the database.
+     *
+     * @param array $requestdata The request data containing the query parameters.
+     * @param string $tableid The ID of the table to select data from.
+     * @return string The generated SELECT query.
      */
     public function build_select($requestdata, $tableid) {
         // Define the columns to be selected.
@@ -49,6 +53,13 @@ class querybuilder extends dtquerybuilder {
         return $query;
     }
 
+    /**
+     * Builds the SQL query for retrieving data from the local_registration table.
+     *
+     * @param array $requestdata The request data containing the table filters and options.
+     * @param string $tableid The ID of the table.
+     * @return string The SQL query.
+     */
     public function build_sql($requestdata, $tableid) {
         $tablealias = 'lr';
 

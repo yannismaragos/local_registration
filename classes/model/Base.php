@@ -26,7 +26,9 @@ namespace local_registration\model;
  */
 abstract class Base {
     /**
-     * Class constructor.
+     * Constructor for the Base class.
+     *
+     * @param array $config An optional array of configuration parameters.
      */
     public function __construct($config = []) {
     }

@@ -33,7 +33,6 @@ class Users extends Base {
      * Class constructor.
      *
      * @param array $config An associative array of configuration settings. Optional.
-     * @param Factory $factory The factory. Optional.
      */
     public function __construct($config = []) {
         parent::__construct($config);

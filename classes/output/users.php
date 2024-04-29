@@ -110,7 +110,10 @@ class users implements \renderable, \templatable {
         // Create datetime field.
         $timecreatedfield = new datefield(
             'timecreated',
-            ['class' => 'form-control datetime', 'data-index' => 11, 'placeholder' => get_string('columntimecreated', 'local_registration')]
+            [
+                'class' => 'form-control datetime',
+                'data-index' => 11, 'placeholder' => get_string('columntimecreated', 'local_registration'),
+            ]
         );
         $data['timecreatedfield'] = $timecreatedfield->render($output);
 

@@ -27,10 +27,4 @@ use local_registration\model\Base as BaseModel;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class Users extends BaseModel {
-    /**
-     * Class constructor.
-     */
-    public function __construct($config = []) {
-        parent::__construct($config);
-    }
 }

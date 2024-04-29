@@ -64,10 +64,10 @@ class Router {
             if (!empty($message)) {
                 // Add the message to the session notification stack.
                 $message = clean_text($message);
-                $SESSION->notifications[] = (object) array(
+                $SESSION->notifications[] = (object) [
                     'message' => $message,
                     'type' => $messagetype,
-                );
+                ];
             }
 
             // Make sure the session is closed properly, this prevents problems in IIS
