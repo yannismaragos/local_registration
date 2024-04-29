@@ -5,6 +5,8 @@ define([
     "core/notification",
     "local_datatables/datatables/dataTables.dateTime",
     "local_datatables/datatables/moment",
+    "local_datatables/datatables/i18n/en-GB",
+    "local_datatables/datatables/i18n/el-GR",
     "local_datatables/datatables/jquery.dataTables",
     "local_datatables/datatables/dataTables.bootstrap4",
     "local_datatables/datatables/dataTables.responsive",
@@ -21,6 +23,8 @@ define([
     Notification,
     DateTime,
     moment,
+    languageENGB,
+    languageELGR,
     ) {
     var init = function() {
         $(function() {
@@ -83,6 +87,9 @@ define([
                     // Show the datatable.
                     $(tableid).removeClass('hidden');
 
+                    // Init selectpicker.
+                    $('.selectpicker').selectpicker('render');
+
                     Helper.initResponsiveTable(table);
                 },
                 processing: true,
@@ -104,6 +111,7 @@ define([
                 searchDelay: 400,
                 orderCellsTop: true,
                 fixedHeader: true,
+                language: languageENGB,
                 responsive: {
                     details: {
                         type: 'column',
