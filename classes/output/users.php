@@ -125,6 +125,8 @@ class users implements \renderable, \templatable {
         );
         $data['assessorfield'] = $assessorfield->render($output);
 
+        $data['locale'] = current_language();
+
         return $data;
     }
 }

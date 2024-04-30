@@ -26,10 +26,16 @@ define([
     languageENGB,
     languageELGR,
     ) {
-    var init = function() {
+    var init = function(locale) {
         $(function() {
             var tableid = '#users';
             var orderColumn = 1; // Set the default ordering column index
+            var lang;
+            if (locale === 'el' || locale === 'el_wp') {
+                lang = languageELGR;
+            } else {
+                lang = languageENGB;
+            }
 
             var table = $(tableid).DataTable({
                 initComplete: function() {
@@ -77,7 +83,7 @@ define([
                                 buttons: {
                                     clear: true
                                 },
-                                onChange: function(value, date, input) {
+                                onChange: function(value) {
                                     table.column(index).search(value).draw();
                                 }
                             });
@@ -111,7 +117,7 @@ define([
                 searchDelay: 400,
                 orderCellsTop: true,
                 fixedHeader: true,
-                language: languageENGB,
+                language: lang,
                 responsive: {
                     details: {
                         type: 'column',

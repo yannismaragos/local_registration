@@ -40,7 +40,8 @@
 
 {{#js}}
     require(['local_registration/users'], function(Users) {
-        Users.init();
+        var locale = '{{locale}}';
+        Users.init(locale);
     });
 {{/js}}
 
